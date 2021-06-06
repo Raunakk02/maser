@@ -6,9 +6,14 @@ import 'package:motion_tab_bar/MotionTabBarView.dart';
 import 'package:motion_tab_bar/motiontabbar.dart';
 import 'package:stacked/stacked.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key key}) : super(key: key);
+class TabsPage extends StatefulWidget {
+  const TabsPage({Key key}) : super(key: key);
 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<TabsPage> {
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TabsPageViewModel>.reactive(
