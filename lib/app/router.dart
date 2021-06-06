@@ -6,7 +6,7 @@ import 'package:maser/meta/views/tabs_page.dart';
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case RouteConstants.homePage:
-      return MaterialPageRoute(builder: (_) => HomePage());
+      return MaterialPageRoute(builder: (_) => TabsPage());
     // case RouteConstants.secondPage:
     //   var arguments = settings.arguments as String;
     //   return MaterialPageRoute(builder: (_) => SecondPage(arg: arguments));
