@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:maser/app/locator.dart';
 import 'package:maser/core/viewmodels/tabs_page_view_model.dart';
 import 'package:motion_tab_bar/MotionTabBarView.dart';
+import 'package:motion_tab_bar/MotionTabController.dart';
 import 'package:motion_tab_bar/motiontabbar.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,17 +14,50 @@ class TabsPage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<TabsPage> {
+class _HomePageState extends State<TabsPage> with SingleTickerProviderStateMixin {
+  MotionTabController _motionTabController;
+
+  @override
+  void initState() {
+    _motionTabController = MotionTabController(
+      vsync: this,
+      initialIndex: 1,
+      length: 4,
+    );
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<TabsPageViewModel>.reactive(
       viewModelBuilder: () => locator<TabsPageViewModel>(),
       builder: (_, model, child) {
         return Scaffold(
-          appBar: AppBar(),
           extendBody: true,
           body: MotionTabBarView(
-            children: [],
+            controller: _motionTabController,
+            children: [
+              Scaffold(
+                appBar: AppBar(
+                  title: Text('Stories'),
+                ),
+              ),
+              Scaffold(
+                appBar: AppBar(
+                  title: Text('chats'),
+                ),
+              ),
+              Scaffold(
+                appBar: AppBar(
+                  title: Text('AM'),
+                ),
+              ),
+              Scaffold(
+                appBar: AppBar(
+                  title: Text('Profile'),
+                ),
+              ),
+            ],
           ),
           bottomNavigationBar: MotionTabBar(
             labels: [
@@ -37,9 +71,9 @@ class _HomePageState extends State<TabsPage> {
             tabSelectedColor: Colors.red,
             onTabItemSelected: (int value) {
               print(value);
-              //  setState(() {
-              //     _tabController.index = value;
-              //  });
+              setState(() {
+                _motionTabController.index = value;
+              });
             },
             icons: [
               Icons.amp_stories_rounded,

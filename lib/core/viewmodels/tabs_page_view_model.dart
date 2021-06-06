@@ -1,6 +1,7 @@
 import 'package:maser/app/locator.dart';
 import 'package:maser/app/route_constants.dart';
 import 'package:maser/core/services/navigation_service.dart';
+import 'package:motion_tab_bar/MotionTabController.dart';
 import 'package:stacked/stacked.dart';
 
 class TabsPageViewModel extends BaseViewModel {
