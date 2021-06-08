@@ -66,15 +66,6 @@ class _HomePageState extends State<TabsPage> with SingleTickerProviderStateMixin
               "Analyze Mood",
               "Profile",
             ],
-            initialSelectedTab: "Stories",
-            tabIconColor: Colors.green,
-            tabSelectedColor: Colors.red,
-            onTabItemSelected: (int value) {
-              print(value);
-              setState(() {
-                _motionTabController.index = value;
-              });
-            },
             icons: [
               Icons.amp_stories_rounded,
               Icons.chat_bubble_rounded,
@@ -82,6 +73,15 @@ class _HomePageState extends State<TabsPage> with SingleTickerProviderStateMixin
               Icons.person_rounded,
             ],
             textStyle: TextStyle(color: Colors.red),
+            initialSelectedTab: "Stories",
+            tabIconColor: Colors.green,
+            tabSelectedColor: Colors.red,
+            onTabItemSelected: (int value) {
+              // print(value);
+              setState(() {
+                _motionTabController.index = value;
+              });
+            },
           ),
         );
       },

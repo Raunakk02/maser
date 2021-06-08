@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:maser/app/locator.dart';
 import 'package:maser/app/route_constants.dart';
 import 'package:maser/app/router.dart' as router;
+import 'package:maser/app/theme/app_theme.dart';
 import 'package:maser/core/services/navigation_service.dart';
 
 void main() {
@@ -15,9 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: locator<NavigationService>().navigatorKey,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: AppTheme.primaryTheme,
       initialRoute: RouteConstants.homePage,
       onGenerateRoute: router.generateRoute,
     );
