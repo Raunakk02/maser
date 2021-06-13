@@ -3,53 +3,43 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:maser/app/locator.dart';
 import 'package:maser/core/services/navigation_service.dart';
+import 'package:maser/meta/views/chats/chats_page.dart';
+import 'package:maser/meta/views/mood_analysis/mood_analysis_page.dart';
+import 'package:maser/meta/views/profile/profile_page.dart';
+import 'package:maser/meta/views/stories/stories_page.dart';
 import 'package:stacked/stacked.dart';
 
 class TabsPageViewModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
-  TabController tabController;
-  AnimationController animationController;
-  Animation<double> animation;
-  CurvedAnimation curve;
+  int activePageIndex;
 
-  Future init(TickerProvider tickerProvider) async {
+  final iconList = <IconData>[
+    Icons.amp_stories_rounded,
+    Icons.chat_bubble_rounded,
+    Icons.mood_rounded,
+    Icons.person_rounded,
+  ];
+
+  final pages = <Widget>[
+    const StoriesPage(),
+    const ChatsPage(),
+    const MoodAnalysisPage(),
+    const ProfilePage(),
+  ];
+
+  Future init() async {
     this.setBusy(true);
-    tabController = TabController(length: 4, vsync: tickerProvider, initialIndex: 0);
-
-    animationController = AnimationController(
-      duration: Duration(seconds: 1),
-      vsync: tickerProvider,
-    );
-    curve = CurvedAnimation(
-      parent: animationController,
-      curve: Interval(
-        0.5,
-        1.0,
-        curve: Curves.fastOutSlowIn,
-      ),
-    );
-    animation = Tween<double>(
-      begin: 0,
-      end: 1,
-    ).animate(curve);
-
     Future.delayed(
       Duration(seconds: 1),
-      () => animationController.forward(),
     );
+    activePageIndex = 0;
     this.setBusy(false);
   }
 
-  void updateTabIndex(int index) {
-    tabController.index = index;
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    animationController.dispose();
-    super.dispose();
+  void setActivePageIndex(int index) {
+    activePageIndex = index;
+    notifyListeners();
   }
 
   void goToSecondPage() {

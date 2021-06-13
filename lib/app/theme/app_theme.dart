@@ -7,5 +7,13 @@ class AppTheme {
     primaryColor: AppColors.sea_blue,
     accentColor: AppColors.lemon,
     focusColor: AppColors.pastel_grey,
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        primary: AppColors.sea_blue,
+      ),
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      foregroundColor: Colors.white,
+    ),
   );
 }

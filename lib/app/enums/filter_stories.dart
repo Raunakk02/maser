@@ -1,0 +1,4 @@
+enum FilterStories {
+  saved,
+  all,
+}
