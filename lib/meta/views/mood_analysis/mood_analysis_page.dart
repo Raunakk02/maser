@@ -32,14 +32,21 @@ class MoodAnalysisPage extends StatelessWidget {
                   height: double.infinity,
                   child: _cameraPreviewWidget(model),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      _cameraTogglesRowWidget(model),
-                      _thumbnailWidget(model),
-                    ],
+                Positioned(
+                  bottom: 80,
+                  left: 0,
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          _cameraTogglesRowWidget(model),
+                          _thumbnailWidget(model),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -48,6 +55,7 @@ class MoodAnalysisPage extends StatelessWidget {
               ],
             ),
             floatingActionButton: _captureCameraButton(model),
+            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           );
         });
   }
@@ -74,23 +82,24 @@ class MoodAnalysisPage extends StatelessWidget {
   }
 
   Widget _thumbnailWidget(MoodAnalysisPageModel model) {
-    return Expanded(
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            model.image == null
-                ? Container()
-                : SizedBox(
-                    child: Image.file(File(model.image.path)),
-                    width: 64.0,
-                    height: 64.0,
-                  ),
-          ],
-        ),
-      ),
-    );
+    return model.image == null
+        ? Container(
+            width: 64.0,
+            height: 64.0,
+          )
+        : Container(
+            decoration: BoxDecoration(
+                border: Border.all(
+              color: AppColors.sea_blue,
+              width: 2,
+            )),
+            child: Image.file(
+              File(model.image.path),
+              fit: BoxFit.cover,
+            ),
+            width: 64.0,
+            height: 64.0,
+          );
   }
 
   /// Display the control bar with buttons to take pictures and record videos.
@@ -127,11 +136,11 @@ class MoodAnalysisPage extends StatelessWidget {
       for (CameraDescription cameraDescription in cameras) {
         toggles.add(
           SizedBox(
-            width: 90.0,
+            width: 30.0,
             child: RadioListTile<CameraDescription>(
               title: Icon(
                 model.getCameraLensIcon(cameraDescription.lensDirection),
-                color: AppColors.slate_grey,
+                color: Colors.white,
               ),
               activeColor: AppColors.grass,
               groupValue: model.controller.description,
@@ -145,6 +154,9 @@ class MoodAnalysisPage extends StatelessWidget {
       }
     }
 
-    return Row(children: toggles);
+    return Column(
+      children: toggles,
+      mainAxisSize: MainAxisSize.min,
+    );
   }
 }
