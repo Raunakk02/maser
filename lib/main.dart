@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: locator<NavigationService>().navigatorKey,
       title: 'Flutter Demo',
       theme: AppTheme.primaryTheme,
-      initialRoute: RouteConstants.homePage,
+      initialRoute: RouteConstants.authPage, //RouteConstants.homePage,
       onGenerateRoute: router.generateRoute,
     );
   }

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -121,8 +119,6 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
         throw ArgumentError('Unknown lens direction');
     }
   }
-
-  //TODO: implement tensorflow logic
 
   //Func to call to take pictures and save them in file
   void onTakePictureButtonPressed() {

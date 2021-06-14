@@ -9,7 +9,7 @@ import 'package:maser/meta/views/profile/profile_page.dart';
 import 'package:maser/meta/views/stories/stories_page.dart';
 import 'package:stacked/stacked.dart';
 
-class TabsPageViewModel extends BaseViewModel {
+class TabsPageModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();
 
   int activePageIndex;

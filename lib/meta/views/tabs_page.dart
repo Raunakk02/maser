@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:maser/app/locator.dart';
 import 'package:maser/app/theme/app_colors.dart';
-import 'package:maser/core/viewmodels/tabs_page_view_model.dart';
+import 'package:maser/core/viewmodels/tabs_page_model.dart';
 import 'package:stacked/stacked.dart';
 
 class TabsPage extends StatefulWidget {
@@ -16,8 +16,8 @@ class TabsPage extends StatefulWidget {
 class _TabsPageState extends State<TabsPage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<TabsPageViewModel>.reactive(
-      viewModelBuilder: () => locator<TabsPageViewModel>(),
+    return ViewModelBuilder<TabsPageModel>.reactive(
+      viewModelBuilder: () => locator<TabsPageModel>(),
       fireOnModelReadyOnce: true,
       onModelReady: (model) => model.init(),
       builder: (_, model, child) {
@@ -36,7 +36,7 @@ class _TabsPageState extends State<TabsPage> with TickerProviderStateMixin {
               ),
             ),
             animationCurve: Curves.fastOutSlowIn,
-            animationDuration: Duration(milliseconds: 300),
+            animationDuration: Duration(milliseconds: 600),
             backgroundColor: Colors.transparent,
             color: AppColors.sea_blue,
             buttonBackgroundColor: AppColors.sea_blue,
