@@ -36,7 +36,7 @@ class _TabsPageState extends State<TabsPage> with TickerProviderStateMixin {
               ),
             ),
             animationCurve: Curves.fastOutSlowIn,
-            animationDuration: Duration(milliseconds: 300),
+            animationDuration: Duration(milliseconds: 600),
             backgroundColor: Colors.transparent,
             color: AppColors.sea_blue,
             buttonBackgroundColor: AppColors.sea_blue,

@@ -13,18 +13,12 @@ class AuthPage extends StatelessWidget {
         viewModelBuilder: () => locator<AuthPageModel>(),
         builder: (_, model, child) {
           return FlutterLogin(
-            onSignup: (_) {
-              return;
-            },
-            onLogin: (_) {
-              return;
-            },
-            onRecoverPassword: (_) {
-              return;
-            },
-            footer: '© 2021 Raunak k.  All rights reserved',
-            onSubmitAnimationCompleted: () {},
+            onSignup: model.signUpUser,
+            onLogin: model.loginUser,
+            onRecoverPassword: model.recoverUserPassword,
+            onSubmitAnimationCompleted: model.navigateToHomePage,
             title: 'MASER',
+            footer: '© 2021 Raunak k.  All rights reserved',
           );
         });
   }
