@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maser/app/route_constants.dart';
+import 'package:maser/meta/views/auth/auth_page.dart';
 import 'package:maser/meta/views/tabs_page.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {
     case RouteConstants.homePage:
       return MaterialPageRoute(builder: (_) => TabsPage());
+    case RouteConstants.authPage:
+      return MaterialPageRoute(builder: (_) => AuthPage());
     // case RouteConstants.secondPage:
     //   var arguments = settings.arguments as String;
     //   return MaterialPageRoute(builder: (_) => SecondPage(arg: arguments));
