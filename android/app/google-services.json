@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "818143304624",
+    "project_id": "maser-e1316",
+    "storage_bucket": "maser-e1316.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:818143304624:android:891a9053dc0b91f5c21475",
+        "android_client_info": {
+          "package_name": "com.raunakk02.maser"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "818143304624-iuu3devd5anb5vuq8fj9veccj7h5237h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.raunakk02.maser",
+            "certificate_hash": "df4e4a1f918118cb8ba2e3dae0d482b8928705bb"
+          }
+        },
+        {
+          "client_id": "818143304624-08qnv8e1vpp1s084umcmcdshrcsn4qfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbuWcRFwLgszlz0Wv8sjwqL0-pRtwHHiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "818143304624-08qnv8e1vpp1s084umcmcdshrcsn4qfh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
