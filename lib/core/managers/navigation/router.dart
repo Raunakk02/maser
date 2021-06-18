@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:maser/app/route_constants.dart';
-import 'package:maser/meta/views/auth/auth_page.dart';
-import 'package:maser/meta/views/tabs_page.dart';
+
+import '../../../meta/views/auth/auth_page.dart';
+import '../../../meta/views/tabs_page.dart';
+import 'route_constants.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
   switch (settings.name) {

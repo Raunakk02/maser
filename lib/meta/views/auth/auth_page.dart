@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:maser/app/locator.dart';
-import 'package:maser/core/viewmodels/auth/auth_page_model.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../../core/managers/navigation/locator.dart';
+import '../../../core/viewmodels/auth/auth_page_model.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({Key key}) : super(key: key);

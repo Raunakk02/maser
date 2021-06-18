@@ -2,12 +2,13 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:maser/app/locator.dart';
-import 'package:maser/app/theme/app_colors.dart';
-import 'package:maser/core/managers/camera_manager.dart';
-import 'package:maser/core/viewmodels/mood_analysis/mood_analysis_page_model.dart';
-import 'package:maser/meta/widgets/custom_app_bar.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../../core/managers/camera_manager.dart';
+import '../../../core/managers/navigation/locator.dart';
+import '../../../core/managers/theme/app_colors.dart';
+import '../../../core/viewmodels/mood_analysis/mood_analysis_page_model.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class MoodAnalysisPage extends StatelessWidget {
   const MoodAnalysisPage({Key key}) : super(key: key);

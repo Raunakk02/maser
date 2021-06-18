@@ -1,13 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:maser/app/locator.dart';
-import 'package:maser/core/services/navigation_service.dart';
-import 'package:maser/meta/views/chats/chats_page.dart';
-import 'package:maser/meta/views/mood_analysis/mood_analysis_page.dart';
-import 'package:maser/meta/views/profile/profile_page.dart';
-import 'package:maser/meta/views/stories/stories_page.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../meta/views/chats/chats_page.dart';
+import '../../meta/views/mood_analysis/mood_analysis_page.dart';
+import '../../meta/views/profile/profile_page.dart';
+import '../../meta/views/stories/stories_page.dart';
+import '../managers/navigation/locator.dart';
+import '../services/navigation_service.dart';
 
 class TabsPageModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();

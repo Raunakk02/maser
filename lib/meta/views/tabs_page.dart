@@ -1,10 +1,11 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:maser/app/locator.dart';
-import 'package:maser/app/theme/app_colors.dart';
-import 'package:maser/core/viewmodels/tabs_page_model.dart';
 import 'package:stacked/stacked.dart';
+
+import '../../core/managers/navigation/locator.dart';
+import '../../core/managers/theme/app_colors.dart';
+import '../../core/viewmodels/tabs_page_model.dart';
 
 class TabsPage extends StatefulWidget {
   const TabsPage({Key key}) : super(key: key);

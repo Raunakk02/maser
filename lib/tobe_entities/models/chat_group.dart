@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:maser/app/models/chat_message.dart';
+import 'chat_message.dart';
 
 class ChatGroup {
   String id;

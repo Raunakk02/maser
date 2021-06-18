@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:maser/app/theme/app_colors.dart';
-import 'package:maser/meta/widgets/custom_app_bar.dart';
+
+import '../../../core/managers/theme/app_colors.dart';
+import '../../widgets/custom_app_bar.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({Key key}) : super(key: key);
