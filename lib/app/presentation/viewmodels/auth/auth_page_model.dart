@@ -1,9 +1,9 @@
 import 'package:flutter_login/flutter_login.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../managers/navigation/locator.dart';
-import '../../managers/navigation/route_constants.dart';
-import '../../services/navigation_service.dart';
+import '../../../../core/managers/navigation/locator.dart';
+import '../../../../core/managers/navigation/route_constants.dart';
+import '../../../../core/services/navigation_service.dart';
 
 class AuthPageModel extends BaseViewModel {
   Future<String> signUpUser(LoginData loginData) async {
