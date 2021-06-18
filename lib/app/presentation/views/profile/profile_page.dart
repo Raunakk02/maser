@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/managers/theme/app_colors.dart';
+import '../../../../core/managers/theme/app_colors.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class ProfilePage extends StatelessWidget {

@@ -1,8 +1,9 @@
 import 'package:get_it/get_it.dart';
-import 'package:maser/core/services/navigation_service.dart';
-import 'package:maser/core/viewmodels/auth/auth_page_model.dart';
-import 'package:maser/core/viewmodels/mood_analysis/mood_analysis_page_model.dart';
-import 'package:maser/core/viewmodels/tabs_page_model.dart';
+
+import '../../../app/presentation/viewmodels/auth/auth_page_model.dart';
+import '../../../app/presentation/viewmodels/mood_analysis/mood_analysis_page_model.dart';
+import '../../../app/presentation/viewmodels/tabs_page_model.dart';
+import '../../services/navigation_service.dart';
 
 GetIt locator = GetIt.instance;
 

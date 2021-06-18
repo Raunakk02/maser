@@ -4,10 +4,10 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../core/managers/camera_manager.dart';
-import '../../../core/managers/navigation/locator.dart';
-import '../../../core/managers/theme/app_colors.dart';
-import '../../../core/viewmodels/mood_analysis/mood_analysis_page_model.dart';
+import '../../../../core/managers/camera_manager.dart';
+import '../../../../core/managers/navigation/locator.dart';
+import '../../../../core/managers/theme/app_colors.dart';
+import '../../viewmodels/mood_analysis/mood_analysis_page_model.dart';
 import '../../widgets/custom_app_bar.dart';
 
 class MoodAnalysisPage extends StatelessWidget {

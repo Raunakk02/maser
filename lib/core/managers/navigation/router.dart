@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../meta/views/auth/auth_page.dart';
-import '../../../meta/views/tabs_page.dart';
+import '../../../app/presentation/views/auth/auth_page.dart';
+import '../../../app/presentation/views/tabs_page.dart';
 import 'route_constants.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings) {
