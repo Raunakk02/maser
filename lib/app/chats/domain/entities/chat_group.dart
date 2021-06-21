@@ -15,18 +15,4 @@ class ChatGroup extends Equatable {
 
   @override
   List<Object> get props => [id, mentorId, messages];
-
-  // factory ChatGroup.fromMap(Map map) {
-  //   return ChatGroup(
-  //     id: map['id'],
-  //     mentorId: map['mentorId'],
-  //     messages: (map['messages'] as List<Map>).map((e) => ChatMessage.fromMap(e)).toList(),
-  //   );
-  // }
-
-  // Map<String, Object> toMap() => {
-  //       'id': this.id,
-  //       'mentorId': this.mentorId,
-  //       'messages': this.messages.map((e) => e.toMap()).toList(),
-  //     };
 }

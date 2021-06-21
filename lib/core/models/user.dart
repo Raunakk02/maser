@@ -24,22 +24,38 @@ class User extends Equatable {
         phone,
         imageUrl,
       ];
+}
 
-  // factory User.fromMap(Map map) {
-  //   return User(
-  //     id: map['id'],
-  //     name: map['name'],
-  //     email: map['email'],
-  //     phone: map['phone'],
-  //     imageUrl: map['imageUrl'],
-  //   );
-  // }
+class UserModel extends User {
+  UserModel({
+    @required String id,
+    @required String name,
+    @required String email,
+    @required String phone,
+    @required String imageUrl,
+  }) : super(
+          id: id,
+          name: name,
+          email: email,
+          phone: phone,
+          imageUrl: imageUrl,
+        );
 
-  // Map<String, Object> toMap() => {
-  //       'id': this.id,
-  //       'name': this.name,
-  //       'email': this.email,
-  //       'phone': this.phone,
-  //       'imageUrl': this.imageUrl,
-  //     };
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+      phone: json['phone'],
+      imageUrl: json['imageUrl'],
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'id': this.id,
+        'name': this.name,
+        'email': this.email,
+        'phone': this.phone,
+        'imageUrl': this.imageUrl,
+      };
 }
