@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../core/managers/navigation/locator.dart';
-import '../../../core/managers/theme/app_colors.dart';
+import '../../../../core/managers/navigation/locator.dart';
+import '../../../../core/managers/theme/app_colors.dart';
 import '../viewmodels/tabs_page_model.dart';
 
 class TabsPage extends StatefulWidget {

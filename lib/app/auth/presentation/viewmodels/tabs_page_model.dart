@@ -3,12 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import '../../../core/managers/navigation/locator.dart';
-import '../../../core/services/navigation_service.dart';
-import '../views/chats/chats_page.dart';
-import '../views/mood_analysis/mood_analysis_page.dart';
-import '../views/profile/profile_page.dart';
-import '../views/stories/stories_page.dart';
+import '../../../../core/managers/navigation/locator.dart';
+import '../../../../core/services/navigation_service.dart';
+import '../../../chats/presentation/views/chats_page.dart';
+import '../../../mood_analysis/presentation/views/mood_analysis_page.dart';
+import '../../../profile/presentation/views/profile_page.dart';
+import '../../../stories/presentation/views/stories_page.dart';
 
 class TabsPageModel extends BaseViewModel {
   final NavigationService _navigationService = locator<NavigationService>();

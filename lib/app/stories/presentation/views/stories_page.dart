@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:maser/core/enums/filter_stories.dart';
+import 'package:maser/core/managers/theme/app_colors.dart';
 
-import '../../../../core/enums/filter_stories.dart';
-import '../../../../core/managers/theme/app_colors.dart';
-import '../../widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 
 class StoriesPage extends StatelessWidget {
   const StoriesPage({Key key}) : super(key: key);

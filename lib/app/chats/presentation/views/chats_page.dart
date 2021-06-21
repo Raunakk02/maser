@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/custom_app_bar.dart';
+import '../../../../core/widgets/custom_app_bar.dart';
 
 class ChatsPage extends StatelessWidget {
   const ChatsPage({Key key}) : super(key: key);

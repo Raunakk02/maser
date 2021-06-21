@@ -3,7 +3,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:stacked/stacked.dart';
 
 import '../../../../core/managers/navigation/locator.dart';
-import '../../viewmodels/auth/auth_page_model.dart';
+import '../viewmodels/auth_page_model.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({Key key}) : super(key: key);
