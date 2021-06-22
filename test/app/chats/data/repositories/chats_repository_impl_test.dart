@@ -291,4 +291,89 @@ void main() {
       );
     });
   });
+
+  group('sendChatMessage', () {
+    final tMentorId = 'test mentorId';
+    final tChatGroupModel = ChatGroupModel(
+      id: 'test id',
+      mentorId: tMentorId,
+      messages: [
+        ChatMessageModel(
+          id: 'test id',
+          msg: 'test msg',
+          uid: 'test uid',
+          timestamp: DateTime(2000),
+        ),
+      ],
+    );
+    final ChatGroup tChatGroup = tChatGroupModel;
+    final tChatMessageModel = ChatMessageModel(
+      id: 'test id',
+      msg: 'test msg',
+      uid: 'test uid',
+      timestamp: DateTime(2000),
+    );
+
+    final tChatMessage = tChatMessageModel;
+
+    test(
+      'should check if the device is online',
+      () async {
+        // arrange
+        when(networkInfo.isConnected).thenAnswer((_) async => true);
+
+        // act
+        chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+
+        // assert
+        verify(networkInfo.isConnected);
+      },
+    );
+
+    runTestsOnline(() {
+      test(
+        'should return null when the call to remote data source is successful',
+        () async {
+          // arrange
+          when(remoteDatasource.sendChatMessage(any, any)).thenAnswer((_) async => null);
+
+          // act
+          final result = await chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+
+          // assert
+          verify(remoteDatasource.sendChatMessage(tChatGroup.id, tChatMessage));
+          expect(result, equals(Right(null)));
+        },
+      );
+
+      test(
+        'should return ServerFailure when the call to remote data source is unsuccessful',
+        () async {
+          // arrange
+          when(remoteDatasource.sendChatMessage(any, any)).thenThrow(ServerException());
+
+          // act
+          final result = await chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+
+          // assert
+          verify(remoteDatasource.sendChatMessage(tChatGroup.id, tChatMessage));
+          expect(result, equals(Left(ServerFailure())));
+        },
+      );
+    });
+
+    runTestsOffline(() {
+      test(
+        'should return ServerFailure when device is offline',
+        () async {
+          // act
+          final result = await chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+
+          // assert
+          verifyZeroInteractions(remoteDatasource);
+          expect(result, equals(Left(ServerFailure())));
+        },
+      );
+    });
+  });
 }
