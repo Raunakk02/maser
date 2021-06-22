@@ -5,7 +5,7 @@ import 'package:maser/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:maser/core/usecases/usecase.dart';
 
-class DeleteChatGroup extends UseCase<void, Params> {
+class DeleteChatGroup implements UseCase<void, Params> {
   final ChatsRepository repository;
 
   DeleteChatGroup(this.repository);
