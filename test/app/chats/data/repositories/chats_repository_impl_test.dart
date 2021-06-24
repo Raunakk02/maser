@@ -5,7 +5,6 @@ import 'package:maser/app/chats/data/models/chat_group_model.dart';
 import 'package:maser/app/chats/data/models/chat_message_model.dart';
 import 'package:maser/app/chats/data/repositories/chats_repository_impl.dart';
 import 'package:maser/app/chats/domain/entities/chat_group.dart';
-import 'package:maser/app/chats/domain/entities/chat_message.dart';
 import 'package:maser/core/error/exceptions.dart';
 import 'package:maser/core/error/failures.dart';
 import 'package:maser/core/services/network/network_info.dart';

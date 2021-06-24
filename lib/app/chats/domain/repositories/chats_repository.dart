@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:flutter/foundation.dart';
 import 'package:maser/app/chats/domain/entities/chat_message.dart';
 import '../../../../core/error/failures.dart';
 import '../entities/chat_group.dart';

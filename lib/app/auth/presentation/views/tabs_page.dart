@@ -1,9 +1,8 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:stacked/stacked.dart';
+import 'package:get/get.dart';
 
-import '../../../../core/managers/navigation/locator.dart';
 import '../../../../core/managers/theme/app_colors.dart';
 import '../viewmodels/tabs_page_model.dart';
 
@@ -15,19 +14,15 @@ class TabsPage extends StatefulWidget {
 }
 
 class _TabsPageState extends State<TabsPage> with TickerProviderStateMixin {
+  final TabsPageModel model = Get.find<TabsPageModel>();
+
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<TabsPageModel>.reactive(
-      viewModelBuilder: () => locator<TabsPageModel>(),
-      fireOnModelReadyOnce: true,
-      onModelReady: (model) => model.init(),
-      builder: (_, model, child) {
-        if (model.isBusy) {
-          return CircularProgressIndicator();
-        }
+    return Obx(
+      () {
         return Scaffold(
           extendBody: true,
-          body: model.pages[model.activePageIndex],
+          body: model.pages[model.activePageIndex.value],
           bottomNavigationBar: CurvedNavigationBar(
             items: List.generate(
               4,

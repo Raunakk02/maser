@@ -2,63 +2,71 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+import 'package:get/get.dart';
 
 import '../../../../core/managers/camera_manager.dart';
-import '../../../../core/managers/navigation/locator.dart';
 import '../../../../core/managers/theme/app_colors.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 import '../viewmodels/mood_analysis_page_model.dart';
 
 class MoodAnalysisPage extends StatelessWidget {
-  const MoodAnalysisPage({Key key}) : super(key: key);
+  final model = Get.find<MoodAnalysisPageModel>();
 
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<MoodAnalysisPageModel>.reactive(
-        viewModelBuilder: () => locator<MoodAnalysisPageModel>(),
-        onModelReady: (model) => model.initCamController(),
-        builder: (_, model, child) {
-          if (!model.controller.value.isInitialized) {
-            return Center(
-              child: Text('Getting Camera Preview...'),
-            );
-          }
-          return Scaffold(
-            appBar: CustomAppBar(title: 'Mood Analysis'),
-            body: Stack(
-              children: <Widget>[
-                Container(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: _cameraPreviewWidget(model),
-                ),
-                Positioned(
-                  bottom: 80,
-                  left: 0,
-                  right: 0,
-                  child: Padding(
-                    padding: const EdgeInsets.all(5.0),
-                    child: Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          _cameraTogglesRowWidget(model),
-                          _thumbnailWidget(model),
-                        ],
+    return Obx(() {
+      if (!model.isCamControllerInitialized.value) {
+        return Center(
+          child: Text('Getting Camera Preview...'),
+        );
+      }
+      return Scaffold(
+        appBar: CustomAppBar(title: 'Mood Analysis'),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: GetBuilder(
+                id: 'camera_preview_widget',
+                init: model,
+                builder: (_model) => _cameraPreviewWidget(_model),
+              ),
+            ),
+            Positioned(
+              bottom: 80,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GetBuilder(
+                        id: 'camera_toggle_row_widget',
+                        init: model,
+                        builder: (_model) => _cameraTogglesRowWidget(_model),
                       ),
-                    ),
+                      GetBuilder(
+                        id: 'thumbnail_widget',
+                        init: model,
+                        builder: (_model) => _thumbnailWidget(_model),
+                      ),
+                    ],
                   ),
                 ),
-                SizedBox(
-                  height: 80,
-                ),
-              ],
+              ),
             ),
-            floatingActionButton: _captureCameraButton(model),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-          );
-        });
+            SizedBox(
+              height: 80,
+            ),
+          ],
+        ),
+        floatingActionButton: _captureCameraButton(model),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      );
+    });
   }
 
   Widget _cameraPreviewWidget(MoodAnalysisPageModel model) {

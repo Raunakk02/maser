@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:maser/app/chats/domain/entities/chat_group.dart';
 import 'package:maser/app/chats/domain/entities/chat_message.dart';
 
