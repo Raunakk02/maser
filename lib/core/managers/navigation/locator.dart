@@ -7,6 +7,6 @@ import '../../../app/mood_analysis/presentation/viewmodels/mood_analysis_page_mo
 void setupLocator() {
   //register view models
   Get.lazyPut(() => TabsPageModel());
-  Get.lazyPut(() => MoodAnalysisPageModel());
   Get.lazyPut(() => AuthPageModel());
+  Get.lazyPut(() => MoodAnalysisPageModel());
 }

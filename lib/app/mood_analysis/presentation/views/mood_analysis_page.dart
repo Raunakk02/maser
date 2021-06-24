@@ -14,48 +14,59 @@ class MoodAnalysisPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return Obx(() {
-    //   if (!model.isCamControllerInitialized.value) {
-    //     return Center(
-    //       child: Text('Getting Camera Preview...'),
-    //     );
-    //   }
-    //   return Scaffold(
-    //     appBar: CustomAppBar(title: 'Mood Analysis'),
-    //     body: Stack(
-    //       children: <Widget>[
-    //         Container(
-    //           width: double.infinity,
-    //           height: double.infinity,
-    //           child: _cameraPreviewWidget(model),
-    //         ),
-    //         Positioned(
-    //           bottom: 80,
-    //           left: 0,
-    //           right: 0,
-    //           child: Padding(
-    //             padding: const EdgeInsets.all(5.0),
-    //             child: Container(
-    //               child: Row(
-    //                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //                 children: <Widget>[
-    //                   _cameraTogglesRowWidget(model),
-    //                   _thumbnailWidget(model),
-    //                 ],
-    //               ),
-    //             ),
-    //           ),
-    //         ),
-    //         SizedBox(
-    //           height: 80,
-    //         ),
-    //       ],
-    //     ),
-    //     floatingActionButton: _captureCameraButton(model),
-    //     floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    //   );
-    // });
-    return Scaffold();
+    return Obx(() {
+      if (!model.isCamControllerInitialized.value) {
+        return Center(
+          child: Text('Getting Camera Preview...'),
+        );
+      }
+      return Scaffold(
+        appBar: CustomAppBar(title: 'Mood Analysis'),
+        body: Stack(
+          children: <Widget>[
+            Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: GetBuilder(
+                id: 'camera_preview_widget',
+                init: model,
+                builder: (_model) => _cameraPreviewWidget(_model),
+              ),
+            ),
+            Positioned(
+              bottom: 80,
+              left: 0,
+              right: 0,
+              child: Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      GetBuilder(
+                        id: 'camera_toggle_row_widget',
+                        init: model,
+                        builder: (_model) => _cameraTogglesRowWidget(_model),
+                      ),
+                      GetBuilder(
+                        id: 'thumbnail_widget',
+                        init: model,
+                        builder: (_model) => _thumbnailWidget(_model),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 80,
+            ),
+          ],
+        ),
+        floatingActionButton: _captureCameraButton(model),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      );
+    });
   }
 
   Widget _cameraPreviewWidget(MoodAnalysisPageModel model) {

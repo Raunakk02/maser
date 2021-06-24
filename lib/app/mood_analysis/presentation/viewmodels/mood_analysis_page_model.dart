@@ -13,6 +13,7 @@ class MoodAnalysisPageModel extends GetxController with WidgetsBindingObserver {
   CameraController controller;
 
   var isCamControllerInitialized = false.obs;
+  var cameraDescriptionChanged = false.obs;
 
   // Counting pointers (number of user fingers on screen)
   int pointers = 0;
@@ -28,6 +29,7 @@ class MoodAnalysisPageModel extends GetxController with WidgetsBindingObserver {
     await loadModel();
     try {
       await controller.initialize();
+      isCamControllerInitialized.value = controller.value.isInitialized;
     } on CameraException catch (e) {
       throw e;
     }
@@ -82,7 +84,10 @@ class MoodAnalysisPageModel extends GetxController with WidgetsBindingObserver {
     // If the controller is updated then update the UI.
     cameraController.addListener(() {
       if (!this.isClosed) {
-        update();
+        update([
+          'camera_preview_widget',
+          'camera_toggle_row_widget',
+        ]);
       }
       if (cameraController.value.hasError) {
         print('Camera error ${cameraController.value.errorDescription}');
@@ -100,7 +105,10 @@ class MoodAnalysisPageModel extends GetxController with WidgetsBindingObserver {
     }
 
     if (!this.isClosed) {
-      update();
+      update([
+        'camera_preview_widget',
+        'camera_toggle_row_widget',
+      ]);
     }
   }
 
@@ -123,14 +131,29 @@ class MoodAnalysisPageModel extends GetxController with WidgetsBindingObserver {
     takePicture().then((XFile file) async {
       if (!this.isClosed) {
         image = file;
-        update();
+        update(['thumbnail_widget']);
         await classifyImage(image);
         if (file != null)
-          Fluttertoast.showToast(
-            msg: '${outputs[0]['label']}',
-            gravity: ToastGravity.CENTER,
-            timeInSecForIosWeb: 2,
-          );
+          Get.showSnackbar(GetBar(
+            padding: const EdgeInsets.symmetric(vertical: 30),
+            messageText: Text(
+              'You are ${outputs[0]['label']}',
+              style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+              ),
+              textAlign: TextAlign.center,
+            ),
+            duration: Duration(seconds: 2),
+            backgroundColor: Colors.white,
+            animationDuration: Duration(milliseconds: 300),
+            icon: Icon(
+              Icons.mood,
+              size: 35,
+            ),
+            overlayBlur: 4,
+            snackPosition: SnackPosition.BOTTOM,
+          ));
       }
     });
   }
