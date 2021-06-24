@@ -3,7 +3,7 @@ import 'package:maser/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:maser/core/usecases/usecase.dart';
 
-class LogoutUser implements UseCase<void, NoParams> {
+class LogoutUser extends UseCase<void, NoParams> {
   final AuthRepository repository;
 
   LogoutUser(this.repository);
