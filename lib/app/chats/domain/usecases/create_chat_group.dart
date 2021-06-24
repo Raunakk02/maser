@@ -5,7 +5,7 @@ import 'package:maser/core/error/failures.dart';
 import 'package:dartz/dartz.dart';
 import 'package:maser/core/usecases/usecase.dart';
 
-class CreateChatGroup implements UseCase<String, Params> {
+class CreateChatGroup extends UseCase<String, Params> {
   final ChatsRepository repository;
 
   CreateChatGroup(this.repository);

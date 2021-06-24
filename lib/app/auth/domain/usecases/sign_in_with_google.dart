@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:maser/core/models/user.dart';
 import 'package:maser/core/usecases/usecase.dart';
 
-class SignInWithGoogle implements UseCase<User, NoParams> {
+class SignInWithGoogle extends UseCase<User, NoParams> {
   final AuthRepository repository;
 
   SignInWithGoogle(this.repository);

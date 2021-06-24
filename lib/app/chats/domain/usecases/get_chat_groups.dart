@@ -4,7 +4,7 @@ import '../repositories/chats_repository.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 
-class GetChatGroups implements UseCase<List<ChatGroup>, NoParams> {
+class GetChatGroups extends UseCase<List<ChatGroup>, NoParams> {
   final ChatsRepository repository;
 
   GetChatGroups(this.repository);
