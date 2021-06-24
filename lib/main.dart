@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maser/core/managers/navigation/locator.dart';
 
 import 'core/managers/camera_manager.dart';
@@ -10,14 +11,14 @@ import 'core/managers/theme/app_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
-  // setupLocator();
+  setupLocator();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       // navigatorKey: locator<NavigationService>().navigatorKey,
       title: 'Flutter Demo',
