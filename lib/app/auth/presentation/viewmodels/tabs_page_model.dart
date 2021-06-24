@@ -1,19 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:stacked/stacked.dart';
+import 'package:get/get.dart';
 
-import '../../../../core/managers/navigation/locator.dart';
-import '../../../../core/services/navigation_service.dart';
 import '../../../chats/presentation/views/chats_page.dart';
 import '../../../mood_analysis/presentation/views/mood_analysis_page.dart';
 import '../../../profile/presentation/views/profile_page.dart';
 import '../../../stories/presentation/views/stories_page.dart';
 
-class TabsPageModel extends BaseViewModel {
-  final NavigationService _navigationService = locator<NavigationService>();
-
-  int activePageIndex;
+class TabsPageModel extends GetxController {
+  var activePageIndex = 0.obs;
 
   final iconList = <IconData>[
     Icons.amp_stories_rounded,
@@ -25,22 +21,12 @@ class TabsPageModel extends BaseViewModel {
   final pages = <Widget>[
     const StoriesPage(),
     const ChatsPage(),
-    const MoodAnalysisPage(),
+    MoodAnalysisPage(),
     const ProfilePage(),
   ];
 
-  Future init() async {
-    this.setBusy(true);
-    Future.delayed(
-      Duration(seconds: 1),
-    );
-    activePageIndex = 0;
-    this.setBusy(false);
-  }
-
   void setActivePageIndex(int index) {
-    activePageIndex = index;
-    notifyListeners();
+    activePageIndex.value = index;
   }
 
   void goToSecondPage() {

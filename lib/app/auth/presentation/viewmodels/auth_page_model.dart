@@ -1,11 +1,9 @@
 import 'package:flutter_login/flutter_login.dart';
-import 'package:stacked/stacked.dart';
+import 'package:get/get.dart';
 
-import '../../../../core/managers/navigation/locator.dart';
 import '../../../../core/managers/navigation/route_constants.dart';
-import '../../../../core/services/navigation_service.dart';
 
-class AuthPageModel extends BaseViewModel {
+class AuthPageModel extends GetxController {
   Future<String> signUpUser(LoginData loginData) async {
     return '';
   }
@@ -19,6 +17,6 @@ class AuthPageModel extends BaseViewModel {
   }
 
   void navigateToHomePage() {
-    locator<NavigationService>().navigateTo(RouteConstants.homePage);
+    Get.toNamed(RouteConstants.homePage);
   }
 }

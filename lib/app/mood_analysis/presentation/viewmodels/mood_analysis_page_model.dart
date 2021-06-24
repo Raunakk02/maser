@@ -1,16 +1,18 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:maser/core/managers/camera_manager.dart';
-import 'package:stacked/stacked.dart';
 import 'package:tflite/tflite.dart';
 
-class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
-  List outputs;
+class MoodAnalysisPageModel extends GetxController with WidgetsBindingObserver {
+  List outputs = [].obs;
 
   XFile image;
   FToast fToast = FToast();
   CameraController controller;
+
+  var isCamControllerInitialized = false.obs;
 
   // Counting pointers (number of user fingers on screen)
   int pointers = 0;
@@ -21,16 +23,14 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
 
   //Initialize camera controller
   Future initCamController() async {
-    this.setBusy(true);
     WidgetsBinding.instance.addObserver(this);
     controller = CameraController(cameras[0], ResolutionPreset.medium);
     await loadModel();
     try {
       await controller.initialize();
     } on CameraException catch (e) {
-      throw error(e);
+      throw e;
     }
-    this.setBusy(false);
   }
 
   Future loadModel() async {
@@ -42,7 +42,6 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
   }
 
   Future classifyImage(XFile image) async {
-    this.setBusy(true);
     var _output = await Tflite.runModelOnImage(
       path: image.path,
       imageMean: 0.0,
@@ -52,7 +51,6 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
       asynch: true,
     );
     outputs = _output;
-    this.setBusy(false);
   }
 
   @override
@@ -83,8 +81,8 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
 
     // If the controller is updated then update the UI.
     cameraController.addListener(() {
-      if (!this.disposed) {
-        notifyListeners();
+      if (!this.isClosed) {
+        update();
       }
       if (cameraController.value.hasError) {
         print('Camera error ${cameraController.value.errorDescription}');
@@ -101,8 +99,8 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
       Fluttertoast.showToast(msg: e.toString());
     }
 
-    if (!this.disposed) {
-      notifyListeners();
+    if (!this.isClosed) {
+      update();
     }
   }
 
@@ -123,9 +121,9 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
   //Func to call to take pictures and save them in file
   void onTakePictureButtonPressed() {
     takePicture().then((XFile file) async {
-      if (!this.disposed) {
+      if (!this.isClosed) {
         image = file;
-        notifyListeners();
+        update();
         await classifyImage(image);
         if (file != null)
           Fluttertoast.showToast(
@@ -157,15 +155,23 @@ class MoodAnalysisPageModel extends BaseViewModel with WidgetsBindingObserver {
       XFile file = await controller.takePicture();
       return file;
     } on CameraException catch (e) {
-      throw error(e);
+      throw e;
     }
   }
 
   @override
-  void dispose() {
+  void onInit() {
+    Future.delayed(Duration.zero, () async {
+      await initCamController();
+    });
+    super.onInit();
+  }
+
+  @override
+  void onClose() {
     controller.dispose();
     Tflite.close();
     WidgetsBinding.instance.removeObserver(this);
-    super.dispose();
+    super.onClose();
   }
 }
