@@ -1,5 +1,4 @@
 import 'package:maser/app/chats/domain/entities/chat_group.dart';
-import 'package:maser/app/chats/domain/entities/chat_message.dart';
 
 abstract class ChatsRemoteDatasource {
   /// Calls firebase to return all the chat group documents
@@ -22,12 +21,4 @@ abstract class ChatsRemoteDatasource {
   ///
   /// Throws a [ServerException] for all error codes.
   Future<String> createChatGroup(String mentorId);
-
-  /// Calls firebase to add a new chat message
-  /// in the messages field of chat group document
-  /// in the chat_groups/userId collection
-  /// with provided mentorId.
-  ///
-  /// Throws a [ServerException] for all error codes.
-  Future<void> sendChatMessage(String chatGroupId, ChatMessage message);
 }
