@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:maser/core/managers/navigation/locator.dart';
 
 import 'core/managers/camera_manager.dart';
@@ -10,6 +11,7 @@ import 'core/managers/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   cameras = await availableCameras();
   setupLocator();
   runApp(MyApp());
@@ -20,10 +22,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      // navigatorKey: locator<NavigationService>().navigatorKey,
-      title: 'Flutter Demo',
+      title: 'Maser',
       theme: AppTheme.primaryTheme,
-      initialRoute: RouteConstants.authPage, //RouteConstants.homePage,
+      initialRoute: RouteConstants.homePage,
       onGenerateRoute: router.generateRoute,
     );
   }

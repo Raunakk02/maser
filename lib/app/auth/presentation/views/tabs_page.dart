@@ -36,6 +36,7 @@ class _TabsPageState extends State<TabsPage> with TickerProviderStateMixin {
             backgroundColor: Colors.transparent,
             color: AppColors.sea_blue,
             buttonBackgroundColor: AppColors.sea_blue,
+            index: model.activePageIndex.value,
             onTap: model.setActivePageIndex,
           ),
         );
