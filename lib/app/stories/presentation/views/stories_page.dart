@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:maser/app/stories/presentation/viewmodels/stories_page_viewmodel.dart';
 import 'package:maser/core/enums/filter_stories.dart';
 import 'package:maser/core/managers/theme/app_colors.dart';
 
 import '../../../../core/widgets/custom_app_bar.dart';
 
 class StoriesPage extends StatelessWidget {
-  const StoriesPage({Key key}) : super(key: key);
+  final model = Get.put(StoriesPageViewmodel());
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,9 @@ class StoriesPage extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 80),
         child: FloatingActionButton(
           child: Icon(Icons.add),
-          //TODO: implement story addition
-          onPressed: () {},
+          onPressed: () {
+            model.navigateToAddStoriesPage();
+          },
         ),
       ),
     );

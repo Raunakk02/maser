@@ -17,7 +17,7 @@ class TabsPageModel extends GetxController {
   ];
 
   final pages = <Widget>[
-    const StoriesPage(),
+    StoriesPage(),
     const ChatsPage(),
     MoodAnalysisPage(),
     ProfilePage(),
