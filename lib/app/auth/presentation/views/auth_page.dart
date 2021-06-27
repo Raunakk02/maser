@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../viewmodels/auth_page_model.dart';
@@ -9,13 +9,22 @@ class AuthPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlutterLogin(
-      onSignup: model.signUpUser,
-      onLogin: model.loginUser,
-      onRecoverPassword: model.recoverUserPassword,
-      onSubmitAnimationCompleted: model.navigateToHomePage,
-      title: 'MASER',
-      footer: '© 2021 Raunak k.  All rights reserved',
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Authenticate'),
+      ),
+      body: Center(
+        child: TextButton.icon(
+          onPressed: () async {
+            await model.signInWithGoogle();
+          },
+          icon: Icon(
+            FontAwesomeIcons.google,
+            color: Colors.red,
+          ),
+          label: Text('Sign In With Google'),
+        ),
+      ),
     );
   }
 }

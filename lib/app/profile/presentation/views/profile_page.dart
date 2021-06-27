@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:maser/app/profile/presentation/viewmodels/profile_page_model.dart';
 
 import '../../../../core/managers/theme/app_colors.dart';
 import '../../../../core/widgets/custom_app_bar.dart';
 
 class ProfilePage extends StatelessWidget {
-  const ProfilePage({Key key}) : super(key: key);
+  final model = Get.find<ProfilePageModel>();
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +22,20 @@ class ProfilePage extends StatelessWidget {
               CircleAvatar(
                 radius: 40,
                 backgroundColor: AppColors.ruby,
-                child: Icon(Icons.person),
+                child: model.user.imageUrl == null
+                    ? Icon(Icons.person)
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(40),
+                        child: Image.network(model.user.imageUrl),
+                      ),
               ),
-              Text('Name: Sarah Connor'),
-              Text('Email: sconnor@genesis.com'),
-              Text('Phone: +91-7463829182'),
-              Text('Mentor Badge'),
+              Text('Name: ${model.user.name}'),
+              Text('Email: ${model.user.email}'),
+              if (model.user.phone != null) Text('Phone: ${model.user.phone}'),
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await model.logoutUser();
+                },
                 child: Text('Sign Out'),
               ),
             ],

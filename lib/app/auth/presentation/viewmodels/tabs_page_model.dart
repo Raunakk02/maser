@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -22,7 +20,7 @@ class TabsPageModel extends GetxController {
     const StoriesPage(),
     const ChatsPage(),
     MoodAnalysisPage(),
-    const ProfilePage(),
+    ProfilePage(),
   ];
 
   void setActivePageIndex(int index) {
