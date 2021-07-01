@@ -1,3 +1,4 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maser/app/stories/presentation/viewmodels/add_stories_viewmodel.dart';
@@ -54,7 +55,9 @@ class AddStoriesPage extends StatelessWidget {
                     ),
                     label: model.pickedFilePath.isEmpty
                         ? Text('No file uploaded')
-                        : Text('Image Uploaded'),
+                        : model.isUplaoadingImage.value
+                            ? Text('Uploading...')
+                            : Text('Image Uploaded'),
                     onPressed: () async {
                       await model.pickFileFromDevice();
                     },
@@ -63,11 +66,16 @@ class AddStoriesPage extends StatelessWidget {
                         : Icon(Icons.check),
                   ),
                 ),
+                Obx(
+                  () => model.isUplaoadingImage.value
+                      ? _buildUploadStatus(model.uploadTask)
+                      : Container(),
+                ),
                 SizedBox(
                   height: 50,
                 ),
                 Obx(
-                  () => model.loading.value
+                  () => model.isSubmittingForm.value
                       ? CircularProgressIndicator()
                       : Obx(
                           () => OutlinedButton(
@@ -90,4 +98,21 @@ class AddStoriesPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _buildUploadStatus(UploadTask uploadTask) {
+  return StreamBuilder<TaskSnapshot>(
+    stream: uploadTask.snapshotEvents,
+    builder: (_, snapshot) {
+      if (snapshot.hasData) {
+        final snap = snapshot.data;
+        final progress = snap.bytesTransferred / snap.totalBytes;
+        final percentage = (progress * 100).toStringAsFixed(1);
+
+        return Text('$percentage %');
+      } else {
+        return Container();
+      }
+    },
+  );
 }
