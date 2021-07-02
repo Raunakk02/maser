@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maser/app/stories/domain/entities/story.dart';
 import 'package:maser/app/stories/presentation/viewmodels/stories_page_viewmodel.dart';
 import 'package:maser/core/enums/filter_stories.dart';
 import 'package:maser/core/managers/theme/app_colors.dart';
@@ -16,15 +17,32 @@ class StoriesPage extends StatelessWidget {
         title: 'Stories',
         menu: _buildPopMenuButton(),
       ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            _buildStoryCard(),
-            _buildStoryCard(),
-            _buildStoryCard(),
-          ],
-        ),
+      body: Obx(
+        () => model.isFetchingStories.value
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : RefreshIndicator(
+                onRefresh: model.getStories,
+                color: AppColors.ruby,
+                child: Obx(() {
+                  if (model.shownStories.length <= 0) {
+                    return Center(
+                      child: TextButton.icon(
+                        onPressed: model.getStories,
+                        icon: Icon(Icons.refresh),
+                        label: Text('No stories to show. Refresh!'),
+                      ),
+                    );
+                  }
+                  final _stories = model.shownStories;
+                  return ListView.builder(
+                    physics: BouncingScrollPhysics(),
+                    itemCount: _stories.length,
+                    itemBuilder: (_, i) => _buildStoryCard(_stories[i]),
+                  );
+                }),
+              ),
       ),
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 80),
@@ -39,11 +57,11 @@ class StoriesPage extends StatelessWidget {
   }
 
   _buildPopMenuButton() {
-    return PopupMenuButton(
+    return PopupMenuButton<FilterStories>(
       color: AppColors.pastel_grey,
       onSelected: (val) {
         debugPrint(val.toString());
-        //TODO: use val
+        model.storiesToShow(filter: val);
       },
       icon: Icon(
         Icons.menu,
@@ -62,7 +80,7 @@ class StoriesPage extends StatelessWidget {
     );
   }
 
-  _buildStoryCard() {
+  _buildStoryCard(Story _story) {
     return Container(
       height: 300,
       child: Card(
@@ -85,7 +103,17 @@ class StoriesPage extends StatelessWidget {
                 //TODO: replace with image child
                 child: Container(
                   height: constraints.maxHeight,
-                  color: Colors.blue,
+                  child: Image.network(
+                    _story.imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => Center(
+                      child: Icon(
+                        Icons.image_rounded,
+                        size: constraints.maxHeight * 0.5,
+                        color: AppColors.grass,
+                      ),
+                    ),
+                  ),
                 ),
               ),
               Align(
@@ -100,9 +128,15 @@ class StoriesPage extends StatelessWidget {
                         onPressed: () {},
                       ),
                       Text('|'),
-                      IconButton(
-                        icon: Icon(Icons.favorite_outline),
-                        onPressed: () {},
+                      Obx(
+                        () => IconButton(
+                          icon: Icon(
+                            model.favStoriesIds.contains(_story.id)
+                                ? Icons.favorite
+                                : Icons.favorite_outline,
+                          ),
+                          onPressed: () => model.toggleFavButton(_story.id),
+                        ),
                       ),
                       Text('|'),
                       IconButton(

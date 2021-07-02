@@ -83,7 +83,7 @@ class AddStoriesPage extends StatelessWidget {
                               shape: StadiumBorder(),
                             ),
                             child: Text('Add story'),
-                            onPressed: model.pickedFilePath.isEmpty
+                            onPressed: model.uploadedImageUrl.value.isEmpty
                                 ? null
                                 : () {
                                     model.submitForm();
