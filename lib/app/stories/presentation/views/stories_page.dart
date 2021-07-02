@@ -100,7 +100,6 @@ class StoriesPage extends StatelessWidget {
                   topLeft: Radius.circular(40),
                   topRight: Radius.circular(40),
                 ),
-                //TODO: replace with image child
                 child: Container(
                   height: constraints.maxHeight,
                   child: Image.network(
@@ -120,28 +119,51 @@ class StoriesPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   color: Colors.white,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  child: Stack(
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.thumb_up_alt_outlined),
-                        onPressed: () {},
-                      ),
-                      Text('|'),
-                      Obx(
-                        () => IconButton(
-                          icon: Icon(
-                            model.favStoriesIds.contains(_story.id)
-                                ? Icons.favorite
-                                : Icons.favorite_outline,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Obx(
+                            () => IconButton(
+                              icon: Icon(
+                                model.likedStoriesIds.contains(_story.id)
+                                    ? Icons.thumb_up
+                                    : Icons.thumb_up_alt_outlined,
+                              ),
+                              onPressed: () =>
+                                  model.toggleLikeButton(_story.id),
+                            ),
                           ),
-                          onPressed: () => model.toggleFavButton(_story.id),
-                        ),
+                          Text('|'),
+                          Obx(
+                            () => IconButton(
+                              icon: Icon(
+                                model.favStoriesIds.contains(_story.id)
+                                    ? Icons.favorite
+                                    : Icons.favorite_outline,
+                              ),
+                              onPressed: () => model.toggleFavButton(_story.id),
+                            ),
+                          ),
+                          Text('|'),
+                          IconButton(
+                            icon: Icon(Icons.chat_bubble_outline),
+                            onPressed: () {},
+                          ),
+                        ],
                       ),
-                      Text('|'),
-                      IconButton(
-                        icon: Icon(Icons.chat_bubble_outline),
-                        onPressed: () {},
+                      Positioned(
+                        top: 2,
+                        left: 25,
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundColor: AppColors.sky_blue,
+                          foregroundColor: Colors.white,
+                          child: FittedBox(
+                            child: Text(_story.likeCount.toString()),
+                          ),
+                        ),
                       ),
                     ],
                   ),

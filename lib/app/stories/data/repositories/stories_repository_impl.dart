@@ -106,4 +106,30 @@ class StoriesRepositoryImpl implements StoriesRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getLikedStories() async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDatasource.getLikedStories());
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> undoLikeStory(String storyId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDatasource.undoLikeStory(storyId));
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
 }

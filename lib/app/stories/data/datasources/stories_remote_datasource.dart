@@ -20,8 +20,23 @@ abstract class StoriesRemoteDatasource {
   /// Calls firebase to increase story likes by 1
   /// in storiesId document of stories collection
   ///
+  /// also add the given story_id to user_id document
+  /// in liked_stories collection
+  ///
   /// Throws a [ServerException] for all error codes.
   Future<void> likeStory(String storyId);
+
+  /// Calls firebase to get storyIds from
+  /// user_id document in liked_stories collection
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<List<String>> getLikedStories();
+
+  /// Calls firebase to remove storyId from
+  /// user_id document in liked_stories collection
+  ///
+  /// Throws a [ServerException] for all error codes.
+  Future<void> undoLikeStory(String storyId);
 
   /// Calls firebase to add storyId to
   /// user_id document in favorite_stories collection
@@ -55,6 +70,8 @@ class StoriesRemoteDatasourceImpl implements StoriesRemoteDatasource {
       FirebaseFirestore.instance.collection('stories');
   CollectionReference _favStoriesCollection =
       FirebaseFirestore.instance.collection('favorite_stories');
+  CollectionReference _likedStoriesCollection =
+      FirebaseFirestore.instance.collection('liked_stories');
 
   @override
   Future<void> addStoryToFavorite(String storyId) async {
@@ -134,22 +151,19 @@ class StoriesRemoteDatasourceImpl implements StoriesRemoteDatasource {
   }
 
   @override
-  Future<void> likeStory(String storyId) {
-    return null;
-  }
-
-  @override
   Future<List<String>> getFavStories() async {
     List<String> _favStories = [];
     try {
       final userId = FirebaseAuth.instance.currentUser.uid;
       final docSnapshot = await _favStoriesCollection.doc(userId).get();
-      final Map<String, dynamic> data = docSnapshot.data();
+      if (docSnapshot.exists) {
+        final Map<String, dynamic> data = docSnapshot.data();
 
-      final fetchedStoryList = data["storyIds"] as List;
-      fetchedStoryList.forEach((element) {
-        _favStories.add(element.toString());
-      });
+        final fetchedStoryList = data["storyIds"] as List;
+        fetchedStoryList.forEach((element) {
+          _favStories.add(element.toString());
+        });
+      }
     } catch (e) {
       throw ServerException();
     }
@@ -163,6 +177,75 @@ class StoriesRemoteDatasourceImpl implements StoriesRemoteDatasource {
       final doc = await _favStoriesCollection.doc(userId).get();
       if (doc.exists) {
         await _favStoriesCollection.doc(userId).update({
+          "storyIds": FieldValue.arrayRemove([storyId]),
+        });
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+    return null;
+  }
+
+  @override
+  Future<List<String>> getLikedStories() async {
+    List<String> _likedStories = [];
+    try {
+      final userId = FirebaseAuth.instance.currentUser.uid;
+      final docSnapshot = await _likedStoriesCollection.doc(userId).get();
+      if (docSnapshot.exists) {
+        final Map<String, dynamic> data = docSnapshot.data();
+
+        final fetchedStoryList = data["storyIds"] as List;
+        fetchedStoryList.forEach((element) {
+          _likedStories.add(element.toString());
+        });
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+    return _likedStories;
+  }
+
+  @override
+  Future<void> likeStory(String storyId) async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser.uid;
+      final _storyDoc = await _storiesCollection.doc(storyId).get();
+      if (_storyDoc.exists) {
+        Story story = StoryModel.fromJson(_storyDoc.data());
+        await _storiesCollection
+            .doc(storyId)
+            .update({"likeCount": story.likeCount + 1});
+      }
+      final likedStoriesDoc = await _likedStoriesCollection.doc(userId).get();
+      if (!likedStoriesDoc.exists) {
+        await _likedStoriesCollection.doc(userId).set({
+          "storyIds": FieldValue.arrayUnion([storyId]),
+        });
+      } else {
+        await _likedStoriesCollection.doc(userId).update({
+          "storyIds": FieldValue.arrayUnion([storyId]),
+        });
+      }
+    } catch (e) {
+      throw ServerException();
+    }
+    return null;
+  }
+
+  @override
+  Future<void> undoLikeStory(String storyId) async {
+    try {
+      final userId = FirebaseAuth.instance.currentUser.uid;
+      final _storyDoc = await _storiesCollection.doc(storyId).get();
+      if (_storyDoc.exists) {
+        Story story = StoryModel.fromJson(_storyDoc.data());
+        await _storiesCollection.doc(storyId).update(
+            {"likeCount": story.likeCount - 1 >= 0 ? story.likeCount - 1 : 0});
+      }
+      final likedStoriesDoc = await _likedStoriesCollection.doc(userId).get();
+      if (likedStoriesDoc.exists) {
+        await _likedStoriesCollection.doc(userId).update({
           "storyIds": FieldValue.arrayRemove([storyId]),
         });
       }

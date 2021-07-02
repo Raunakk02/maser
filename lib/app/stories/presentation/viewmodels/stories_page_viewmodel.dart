@@ -7,7 +7,11 @@ import 'package:maser/app/stories/domain/usecases/add_story_to_favorite.dart';
 import 'package:maser/app/stories/domain/usecases/delete_story_from_favorite.dart'
     as delStoryFromFav;
 import 'package:maser/app/stories/domain/usecases/get_fav_stories.dart';
+import 'package:maser/app/stories/domain/usecases/get_liked_story.dart';
 import 'package:maser/app/stories/domain/usecases/get_stories.dart';
+import 'package:maser/app/stories/domain/usecases/like_story.dart' as likeStory;
+import 'package:maser/app/stories/domain/usecases/undo_like_story.dart'
+    as undoLikeStory;
 import 'package:maser/app/stories/presentation/viewmodels/add_stories_viewmodel.dart';
 import 'package:maser/core/enums/filter_stories.dart';
 import 'package:maser/core/managers/navigation/route_constants.dart';
@@ -17,6 +21,7 @@ import 'package:maser/core/usecases/usecase.dart';
 class StoriesPageViewmodel extends GetxController {
   var stories = <Story>[].obs;
   var favStoriesIds = <String>[].obs;
+  var likedStoriesIds = <String>[].obs;
   var isFetchingStories = false.obs;
   var shownStories = <Story>[].obs;
 
@@ -52,11 +57,33 @@ class StoriesPageViewmodel extends GetxController {
     ),
   );
 
+  final _likeStory = likeStory.LikeStory(
+    StoriesRepositoryImpl(
+      remoteDatasource: StoriesRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
+  final _undoLikeStory = undoLikeStory.UndoLikeStory(
+    StoriesRepositoryImpl(
+      remoteDatasource: StoriesRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
+  final _getLikedStories = GetLikedStories(
+    StoriesRepositoryImpl(
+      remoteDatasource: StoriesRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
   Future<void> getStories({bool isInit = false}) async {
     if (isInit) isFetchingStories.value = true;
     stories.value = [];
     final result = await _getStories(NoParams());
     await fetchFavStories();
+    await fetchLikedStories();
 
     if (result.isLeft()) {
       Get.showSnackbar(GetBar(
@@ -122,6 +149,81 @@ class StoriesPageViewmodel extends GetxController {
       deleteStoryFromFavorite(storyId);
     } else {
       addStoryToFav(storyId);
+    }
+  }
+
+  Future<void> fetchLikedStories() async {
+    likedStoriesIds.value = [];
+    final result = await _getLikedStories(NoParams());
+    if (result.isLeft()) {
+      Get.showSnackbar(GetBar(
+        message: 'Something went wrong',
+      ));
+    } else {
+      likedStoriesIds.value = result.getOrElse(null);
+    }
+    return;
+  }
+
+  Future<void> addToLikedStories(String storyId) async {
+    if (likedStoriesIds.contains(storyId)) {
+      return;
+    }
+    likedStoriesIds.add(storyId);
+    final story = stories.firstWhere((element) => element.id == storyId);
+    final index = stories.indexOf(story);
+    stories[index] = Story(
+      id: story.id,
+      storyTitle: story.storyTitle,
+      storyContent: story.storyContent,
+      imageUrl: story.imageUrl,
+      postedOn: story.postedOn,
+      mentorId: story.mentorId,
+      likeCount: story.likeCount + 1,
+    );
+    final result = await _likeStory(likeStory.Params(storyId: storyId));
+    if (result.isLeft()) {
+      likedStoriesIds.remove(storyId);
+      stories[index] = story;
+      Get.showSnackbar(GetBar(
+        message: 'Something went wrong',
+      ));
+    }
+    return;
+  }
+
+  Future<void> removeFromLikedStories(String storyId) async {
+    if (!likedStoriesIds.contains(storyId)) {
+      return;
+    }
+    likedStoriesIds.remove(storyId);
+    final story = stories.firstWhere((element) => element.id == storyId);
+    final index = stories.indexOf(story);
+    stories[index] = Story(
+      id: story.id,
+      storyTitle: story.storyTitle,
+      storyContent: story.storyContent,
+      imageUrl: story.imageUrl,
+      postedOn: story.postedOn,
+      mentorId: story.mentorId,
+      likeCount: story.likeCount - 1,
+    );
+    final result = await _undoLikeStory(undoLikeStory.Params(storyId: storyId));
+    if (result.isLeft()) {
+      likedStoriesIds.add(storyId);
+      stories[index] = story;
+      Get.showSnackbar(GetBar(
+        message: 'Something went wrong',
+      ));
+    }
+    return;
+  }
+
+  void toggleLikeButton(String storyId) {
+    if (likedStoriesIds.contains(storyId)) {
+      removeFromLikedStories(storyId);
+    } else {
+      addToLikedStories(storyId);
     }
   }
 
