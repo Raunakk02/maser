@@ -19,7 +19,7 @@ class AddStoiesViewModel extends GetxController {
   var storyTitle = '';
   var storyContent = '';
   var pickedFilePath = ''.obs;
-  var uploadedImageUrl;
+  var uploadedImageUrl = ''.obs;
   File pickedFile;
   var isSubmittingForm = false.obs;
   var isUplaoadingImage = false.obs;
@@ -61,7 +61,7 @@ class AddStoiesViewModel extends GetxController {
     networkInfo: NetworkInfoImpl(DataConnectionChecker()),
   ));
 
-  void submitForm() {
+  void submitForm() async {
     if (formKey.isBlank) return;
     isSubmittingForm.value = true;
     if (formKey.currentState.validate()) {
@@ -70,20 +70,28 @@ class AddStoiesViewModel extends GetxController {
       print('Content: $storyContent');
       print('Uploaded file: $uploadedImageUrl');
     }
-    _createStory(
+    final result = await _createStory(
       Params(
         story: Story(
           id: '',
           storyTitle: storyTitle,
           storyContent: storyContent,
-          imageUrl: uploadedImageUrl,
+          imageUrl: uploadedImageUrl.value,
           postedOn: DateTime.now(),
           mentorId: FirebaseAuth.instance.currentUser.uid,
           likeCount: 0,
         ),
       ),
     );
+
     isSubmittingForm.value = false;
+    if (result.isLeft()) {
+      Get.showSnackbar(GetBar(
+        message: "Something went wrong!",
+      ));
+    } else {
+      Get.back();
+    }
   }
 
   Future initUploadTask() async {
@@ -97,7 +105,7 @@ class AddStoiesViewModel extends GetxController {
     }
 
     final snapshot = await uploadTask.whenComplete(() {});
-    uploadedImageUrl = await snapshot.ref.getDownloadURL();
+    uploadedImageUrl.value = await snapshot.ref.getDownloadURL();
     isUplaoadingImage.value = false;
   }
 

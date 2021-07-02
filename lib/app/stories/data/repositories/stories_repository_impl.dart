@@ -80,4 +80,30 @@ class StoriesRepositoryImpl implements StoriesRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<String>>> getFavStories() async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDatasource.getFavStories());
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> deleteStoryFromFavorite(String storyId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDatasource.deleteStoryFromFavorite(storyId));
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
 }

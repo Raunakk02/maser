@@ -8,4 +8,6 @@ abstract class StoriesRepository {
   Future<Either<Failure, void>> likeStory(String storyId);
   Future<Either<Failure, void>> addStoryToFavorite(String storyId);
   Future<Either<Failure, void>> deleteStory(String storyId);
+  Future<Either<Failure, void>> deleteStoryFromFavorite(String storyId);
+  Future<Either<Failure, List<String>>> getFavStories();
 }
