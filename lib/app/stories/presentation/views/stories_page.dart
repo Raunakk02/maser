@@ -95,21 +95,26 @@ class StoriesPage extends StatelessWidget {
         child: LayoutBuilder(
           builder: (_, constraints) => Stack(
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
-                child: Container(
-                  height: constraints.maxHeight,
-                  child: Image.network(
-                    _story.imageUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Center(
-                      child: Icon(
-                        Icons.image_rounded,
-                        size: constraints.maxHeight * 0.5,
-                        color: AppColors.grass,
+              InkWell(
+                onTap: () {
+                  model.navigateToStoryDetailsPage(_story);
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40),
+                  ),
+                  child: Container(
+                    height: constraints.maxHeight,
+                    child: Image.network(
+                      _story.imageUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Center(
+                        child: Icon(
+                          Icons.image_rounded,
+                          size: constraints.maxHeight * 0.5,
+                          color: AppColors.grass,
+                        ),
                       ),
                     ),
                   ),
