@@ -248,4 +248,8 @@ class StoriesPageViewmodel extends GetxController {
       getStories();
     });
   }
+
+  void navigateToStoryDetailsPage(Story _story) {
+    Get.toNamed(RouteConstants.storyDetailsPage, arguments: _story);
+  }
 }
