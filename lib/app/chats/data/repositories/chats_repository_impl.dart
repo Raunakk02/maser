@@ -19,7 +19,7 @@ class ChatsRepositoryImpl implements ChatsRepository {
   });
 
   @override
-  Future<Either<Failure, List<ChatGroup>>> getChatGroups() async {
+  Future<Either<Failure, Stream<List<ChatGroup>>>> getChatGroups() async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await remoteDatasource.getChatGroups());

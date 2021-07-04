@@ -4,8 +4,6 @@ import 'package:maser/app/chats/data/models/chat_group_model.dart';
 import 'package:maser/app/chats/data/models/chat_message_model.dart';
 import 'package:maser/app/chats/domain/entities/chat_group.dart';
 import 'package:maser/app/chats/domain/entities/chat_message.dart';
-import 'package:maser/app/chats/domain/usecases/get_chat_group.dart';
-import 'package:maser/app/chats/domain/usecases/get_user_details.dart';
 import 'package:maser/core/error/exceptions.dart';
 import 'package:maser/core/models/user.dart';
 
@@ -15,7 +13,7 @@ abstract class ChatsRemoteDatasource {
   /// in chat_groups/userId collection.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<List<ChatGroup>> getChatGroups();
+  Future<Stream<List<ChatGroup>>> getChatGroups();
 
   /// Calls firebase to delete a particular chat group document
   /// with the given chatGroupId
@@ -66,23 +64,38 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
 
   @override
   Future<String> createChatGroup(String mentorId) async {
-    final newChatGroup = ChatGroupModel(
+    final newUserChatGroup = ChatGroupModel(
       id: mentorId,
       mentorId: mentorId,
       messages: <ChatMessageModel>[],
     );
+    final newMentorChatGroup = ChatGroupModel(
+      id: userId,
+      mentorId: userId,
+      messages: <ChatMessageModel>[],
+    );
     try {
+      //set chat group for the person who clicked on chat icon on story
       final _userChatsCollection = _getUserChatsCollection(userId);
       final doc = _userChatsCollection.doc(mentorId);
       final docSnapshot = await doc.get();
       if (docSnapshot.exists) {
         return mentorId;
       }
-      await doc.set(newChatGroup.toJson());
+      await doc.set(newUserChatGroup.toJson());
+
+      //set chat group for the mentor in his user_chats collection
+      final _mentorChatsCollection = _getUserChatsCollection(mentorId);
+      final mentorChatDoc = _mentorChatsCollection.doc(userId);
+      final mentorDocSnapshot = await mentorChatDoc.get();
+      if (mentorDocSnapshot.exists) {
+        return mentorId;
+      }
+      await mentorChatDoc.set(newMentorChatGroup.toJson());
     } catch (e) {
       throw ServerException();
     }
-    return newChatGroup.id;
+    return newUserChatGroup.id;
   }
 
   @override
@@ -91,18 +104,21 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
   }
 
   @override
-  Future<List<ChatGroup>> getChatGroups() async {
-    List<ChatGroup> _chatGroups = [];
-    try {
-      final querySnapshot = await _getUserChatsCollection(userId).get();
-      querySnapshot.docs.forEach((doc) {
-        final chatGroup = ChatGroupModel.fromJson(doc as Map);
-        _chatGroups.add(chatGroup);
-      });
-    } catch (e) {
-      throw ServerException();
-    }
-    return _chatGroups;
+  Future<Stream<List<ChatGroup>>> getChatGroups() async {
+    Stream<List<ChatGroup>> _chatGroupsStream;
+    // List<ChatGroup> _chatGroups;
+    // try {
+    //   final querySnapshot = _getUserChatsCollection(userId).snapshots();
+    //   querySnapshot.listen((event) {
+    //     event.docs.forEach((doc) {
+    //       final chatGroup = ChatGroupModel.fromJson(doc as Map);
+    //       _chatGroups.add(chatGroup);
+    //     });});
+    //   _chatGroupsStream = Stream.value(_chatGroups);
+    // } catch (e) {
+    //   throw ServerException();
+    // }
+    return _chatGroupsStream;
   }
 
   @override
@@ -139,5 +155,9 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
       throw ServerException();
     }
     return _user;
+  }
+
+  Stream<QuerySnapshot<Object>> chatGroupsStream() {
+    return _getUserChatsCollection(userId).snapshots();
   }
 }

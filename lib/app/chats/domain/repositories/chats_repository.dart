@@ -5,7 +5,7 @@ import '../../../../core/error/failures.dart';
 import '../entities/chat_group.dart';
 
 abstract class ChatsRepository {
-  Future<Either<Failure, List<ChatGroup>>> getChatGroups();
+  Future<Either<Failure, Stream<List<ChatGroup>>>> getChatGroups();
   Future<Either<Failure, ChatGroup>> getChatGroup(String chatGroupId);
   Future<Either<Failure, User>> getUserDetails(String userId);
   Future<Either<Failure, void>> deleteChatGroup(String chatGroupId);

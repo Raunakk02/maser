@@ -112,6 +112,7 @@ class StoriesPageViewmodel extends GetxController {
     if (result.isLeft()) {
       Get.showSnackbar(GetBar(
         message: 'Something went wrong',
+        duration: Duration(seconds: 2),
       ));
     } else {
       stories.value = result.getOrElse(null);
