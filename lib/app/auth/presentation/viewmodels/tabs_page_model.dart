@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../../../chats/presentation/views/chats_page.dart';
+import '../../../chats/presentation/views/chat_groups_page.dart';
 import '../../../mood_analysis/presentation/views/mood_analysis_page.dart';
 import '../../../profile/presentation/views/profile_page.dart';
 import '../../../stories/presentation/views/stories_page.dart';
@@ -18,7 +18,7 @@ class TabsPageModel extends GetxController {
 
   final pages = <Widget>[
     StoriesPage(),
-    const ChatsPage(),
+    const ChatGroupsPage(),
     MoodAnalysisPage(),
     ProfilePage(),
   ];

@@ -38,8 +38,12 @@ class StoriesPage extends StatelessWidget {
                   final _stories = model.shownStories;
                   return ListView.builder(
                     physics: BouncingScrollPhysics(),
-                    itemCount: _stories.length,
-                    itemBuilder: (_, i) => _buildStoryCard(_stories[i]),
+                    itemCount: _stories.length + 1,
+                    itemBuilder: (_, i) => i == _stories.length
+                        ? SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.38,
+                          )
+                        : _buildStoryCard(_stories[i]),
                   );
                 }),
               ),
@@ -106,6 +110,7 @@ class StoriesPage extends StatelessWidget {
                   ),
                   child: Container(
                     height: constraints.maxHeight,
+                    width: constraints.maxWidth,
                     child: Image.network(
                       _story.imageUrl,
                       fit: BoxFit.cover,
@@ -128,39 +133,13 @@ class StoriesPage extends StatelessWidget {
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Obx(
-                            () => IconButton(
-                              icon: Icon(
-                                model.likedStoriesIds.contains(_story.id)
-                                    ? Icons.thumb_up
-                                    : Icons.thumb_up_alt_outlined,
-                              ),
-                              onPressed: () =>
-                                  model.toggleLikeButton(_story.id),
-                            ),
-                          ),
-                          Text('|'),
-                          Obx(
-                            () => IconButton(
-                              icon: Icon(
-                                model.favStoriesIds.contains(_story.id)
-                                    ? Icons.favorite
-                                    : Icons.favorite_outline,
-                              ),
-                              onPressed: () => model.toggleFavButton(_story.id),
-                            ),
-                          ),
-                          Text('|'),
-                          IconButton(
-                            icon: Icon(Icons.chat_bubble_outline),
-                            onPressed: () {},
-                          ),
-                        ],
+                        children: _story.mentorId == model.userId
+                            ? _buildRowForCurrentUserStory(_story)
+                            : _buildRowForOtherUsersStory(_story),
                       ),
                       Positioned(
                         top: 2,
-                        left: 25,
+                        left: _story.mentorId == model.userId ? 50 : 25,
                         child: CircleAvatar(
                           radius: 12,
                           backgroundColor: AppColors.sky_blue,
@@ -179,5 +158,64 @@ class StoriesPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> _buildRowForCurrentUserStory(Story _story) {
+    return [
+      Obx(
+        () => IconButton(
+          icon: Icon(
+            model.likedStoriesIds.contains(_story.id)
+                ? Icons.thumb_up
+                : Icons.thumb_up_alt_outlined,
+          ),
+          onPressed: () => model.toggleLikeButton(_story.id),
+        ),
+      ),
+      Text('|'),
+      Obx(
+        () => IconButton(
+          icon: Icon(
+            model.favStoriesIds.contains(_story.id)
+                ? Icons.favorite
+                : Icons.favorite_outline,
+          ),
+          onPressed: () => model.toggleFavButton(_story.id),
+        ),
+      ),
+    ];
+  }
+
+  List<Widget> _buildRowForOtherUsersStory(Story _story) {
+    return [
+      Obx(
+        () => IconButton(
+          icon: Icon(
+            model.likedStoriesIds.contains(_story.id)
+                ? Icons.thumb_up
+                : Icons.thumb_up_alt_outlined,
+          ),
+          onPressed: () => model.toggleLikeButton(_story.id),
+        ),
+      ),
+      Text('|'),
+      Obx(
+        () => IconButton(
+          icon: Icon(
+            model.favStoriesIds.contains(_story.id)
+                ? Icons.favorite
+                : Icons.favorite_outline,
+          ),
+          onPressed: () => model.toggleFavButton(_story.id),
+        ),
+      ),
+      Text('|'),
+      IconButton(
+        icon: Icon(Icons.chat_bubble_outline),
+        onPressed: () {
+          model.createChatGroupAndNavigate(_story.mentorId);
+        },
+      ),
+    ];
   }
 }

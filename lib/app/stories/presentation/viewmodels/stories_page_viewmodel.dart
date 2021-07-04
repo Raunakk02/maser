@@ -1,5 +1,13 @@
 import 'package:data_connection_checker/data_connection_checker.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:maser/app/chats/data/datasources/chats_remote_datasource.dart';
+import 'package:maser/app/chats/data/repositories/chats_repository_impl.dart';
+import 'package:maser/app/chats/domain/usecases/create_chat_group.dart'
+    as createChatGroupUseCase;
+import 'package:maser/app/chats/domain/usecases/get_chat_group.dart'
+    as getChatGroupUseCase;
+import 'package:maser/app/chats/presentation/viewmodels/chat_messaging_page_viewmodel.dart';
 import 'package:maser/app/stories/data/datasources/stories_remote_datasource.dart';
 import 'package:maser/app/stories/data/repositories/stories_repository_impl.dart';
 import 'package:maser/app/stories/domain/entities/story.dart';
@@ -24,6 +32,8 @@ class StoriesPageViewmodel extends GetxController {
   var likedStoriesIds = <String>[].obs;
   var isFetchingStories = false.obs;
   var shownStories = <Story>[].obs;
+
+  final userId = FirebaseAuth.instance.currentUser.uid;
 
   StoriesPageViewmodel() {
     getStories(isInit: true);
@@ -74,6 +84,20 @@ class StoriesPageViewmodel extends GetxController {
   final _getLikedStories = GetLikedStories(
     StoriesRepositoryImpl(
       remoteDatasource: StoriesRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
+  final _createChatGroup = createChatGroupUseCase.CreateChatGroup(
+    ChatsRepositoryImpl(
+      remoteDatasource: ChatsRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
+  final _getChatGroup = getChatGroupUseCase.GetChatGroup(
+    ChatsRepositoryImpl(
+      remoteDatasource: ChatsRemoteDatasourceImpl(),
       networkInfo: NetworkInfoImpl(DataConnectionChecker()),
     ),
   );
@@ -251,5 +275,40 @@ class StoriesPageViewmodel extends GetxController {
 
   void navigateToStoryDetailsPage(Story _story) {
     Get.toNamed(RouteConstants.storyDetailsPage, arguments: _story);
+  }
+
+  Future<void> createChatGroupAndNavigate(String mentorId) async {
+    Get.showSnackbar(GetBar(
+      overlayBlur: 4,
+      message: 'Please wait! Creating chat group...',
+      duration: Duration(seconds: 2),
+    ));
+    final result = await _createChatGroup(
+      createChatGroupUseCase.Params(mentorId: mentorId),
+    );
+    if (Get.isOverlaysOpen) {
+      Get.back();
+    }
+    if (result.isLeft()) {
+      Get.showSnackbar(GetBar(
+        message: "Something went wrong!",
+      ));
+    } else {
+      final result = await _getChatGroup(
+        getChatGroupUseCase.Params(chatGroupId: mentorId),
+      );
+      if (result.isLeft()) {
+        Get.showSnackbar(GetBar(
+          message: "Something went wrong!",
+          duration: Duration(seconds: 2),
+        ));
+      } else {
+        final chatGroup = result.getOrElse(null);
+        Get.put(ChatMessagingPageViewmodel(chatGroup));
+        Get.toNamed(RouteConstants.chatMessagingPage).then((value) {
+          Get.delete<ChatMessagingPageViewmodel>();
+        });
+      }
+    }
   }
 }

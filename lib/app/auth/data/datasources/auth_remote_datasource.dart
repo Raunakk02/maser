@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:maser/core/error/exceptions.dart';
+import 'package:maser/core/managers/navigation/locator.dart';
 import 'package:maser/core/models/user.dart';
 
 final googleSignIn = GoogleSignIn();
@@ -46,6 +48,7 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     try {
       await googleSignIn.disconnect();
       await FirebaseAuth.instance.signOut();
+      removeLocatorOnLogout();
     } on Exception {
       throw AuthException();
     }
@@ -63,6 +66,10 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         phone: firebaseUser.phoneNumber,
         imageUrl: firebaseUser.photoURL,
       );
+      setupLocator();
+
+      final usersCollection = FirebaseFirestore.instance.collection("users");
+      await usersCollection.doc(user.id).set(user.toJson());
 
       return user;
     } on Exception {

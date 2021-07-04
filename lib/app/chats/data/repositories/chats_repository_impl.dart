@@ -6,6 +6,7 @@ import 'package:maser/app/chats/domain/entities/chat_message.dart';
 import 'package:maser/app/chats/domain/repositories/chats_repository.dart';
 import 'package:maser/core/error/exceptions.dart';
 import 'package:maser/core/error/failures.dart';
+import 'package:maser/core/models/user.dart';
 import 'package:maser/core/services/network/network_info.dart';
 
 class ChatsRepositoryImpl implements ChatsRepository {
@@ -57,13 +58,40 @@ class ChatsRepositoryImpl implements ChatsRepository {
   }
 
   @override
-  Future<Either<Failure, void>> sendChatMessage(String chatGroupId, ChatMessage message) async {
+  Future<Either<Failure, void>> sendChatMessage(
+      String chatGroupId, ChatMessage message) async {
     if (await networkInfo.isConnected) {
       try {
         return Right(await remoteDatasource.sendChatMessage(
           chatGroupId,
           message,
         ));
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, ChatGroup>> getChatGroup(String chatGroupId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDatasource.getChatGroup(chatGroupId));
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, User>> getUserDetails(String userId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        return Right(await remoteDatasource.getUserDetails(userId));
       } on ServerException {
         return Left(ServerFailure());
       }
