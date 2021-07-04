@@ -122,8 +122,50 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
   }
 
   @override
-  Future<void> sendChatMessage(String mentorId, ChatMessage message) {
-    return null;
+  Future<void> sendChatMessage(String mentorId, ChatMessage message) async {
+    final chatMessageModel = ChatMessageModel(
+      id: message.id,
+      msg: message.msg,
+      uid: message.uid,
+      timestamp: message.timestamp,
+    );
+    final jsonMessage = chatMessageModel.toJson();
+    final newUserChatGroup = ChatGroupModel(
+      id: mentorId,
+      mentorId: mentorId,
+      messages: <ChatMessageModel>[chatMessageModel],
+    );
+    final newMentorChatGroup = ChatGroupModel(
+      id: userId,
+      mentorId: userId,
+      messages: <ChatMessageModel>[chatMessageModel],
+    );
+    try {
+      //set chat message for the person who clicked on chat icon on story
+      final _userChatsCollection = _getUserChatsCollection(userId);
+      final doc = _userChatsCollection.doc(mentorId);
+      final docSnapshot = await doc.get();
+      //if chat doc not exist, create a new one with this chat message
+      if (!docSnapshot.exists) {
+        await doc.set(newUserChatGroup.toJson());
+      }
+      await doc.update({
+        "messages": FieldValue.arrayUnion([jsonMessage])
+      });
+
+      //set chat message for the mentor in his user_chats collection
+      final _mentorChatsCollection = _getUserChatsCollection(mentorId);
+      final mentorChatDoc = _mentorChatsCollection.doc(userId);
+      final mentorDocSnapshot = await mentorChatDoc.get();
+      if (!mentorDocSnapshot.exists) {
+        await doc.set(newMentorChatGroup.toJson());
+      }
+      await mentorChatDoc.update({
+        "messages": FieldValue.arrayUnion([jsonMessage])
+      });
+    } catch (e) {
+      throw ServerException();
+    }
   }
 
   @override
@@ -159,5 +201,10 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
 
   Stream<QuerySnapshot<Object>> chatGroupsStream() {
     return _getUserChatsCollection(userId).snapshots();
+  }
+
+  Stream<DocumentSnapshot<Object>> individualChatGroupStream(
+      ChatGroup chatGroup) {
+    return _getUserChatsCollection(userId).doc(chatGroup.id).snapshots();
   }
 }
