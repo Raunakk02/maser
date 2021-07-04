@@ -27,7 +27,6 @@ class ChatGroupsPage extends StatelessWidget {
             final data = streamSnap.data;
             final docs = data.docs;
             List<ChatGroup> chatGroups = docs.map<ChatGroup>((doc) {
-              print(doc["messages"]);
               return ChatGroupModel.fromJson({
                 "id": doc["id"],
                 "mentorId": doc["mentorId"],
