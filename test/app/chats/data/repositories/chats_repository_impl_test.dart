@@ -75,7 +75,7 @@ void main() {
         ],
       ),
     ];
-    final List<ChatGroup> tList = tModelList;
+    final Stream<List<ChatGroup>> tListStream = Stream.value(tModelList);
 
     test(
       'should check if the device is online',
@@ -96,14 +96,15 @@ void main() {
         'should return remote data when the call to remote data source is successful',
         () async {
           // arrange
-          when(remoteDatasource.getChatGroups()).thenAnswer((_) async => tList);
+          when(remoteDatasource.getChatGroups())
+              .thenAnswer((_) async => tListStream);
 
           // act
           final result = await chatsRepositoryImpl.getChatGroups();
 
           // assert
           verify(remoteDatasource.getChatGroups());
-          expect(result, equals(Right(tList)));
+          expect(result, equals(Right(tListStream)));
         },
       );
 
@@ -172,10 +173,12 @@ void main() {
         'should return null when the call to remote data source is successful',
         () async {
           // arrange
-          when(remoteDatasource.deleteChatGroup(any)).thenAnswer((_) async => null);
+          when(remoteDatasource.deleteChatGroup(any))
+              .thenAnswer((_) async => null);
 
           // act
-          final result = await chatsRepositoryImpl.deleteChatGroup(tChatGroup.id);
+          final result =
+              await chatsRepositoryImpl.deleteChatGroup(tChatGroup.id);
 
           // assert
           verify(remoteDatasource.deleteChatGroup(tChatGroup.id));
@@ -187,10 +190,12 @@ void main() {
         'should return ServerFailure when the call to remote data source is unsuccessful',
         () async {
           // arrange
-          when(remoteDatasource.deleteChatGroup(any)).thenThrow(ServerException());
+          when(remoteDatasource.deleteChatGroup(any))
+              .thenThrow(ServerException());
 
           // act
-          final result = await chatsRepositoryImpl.deleteChatGroup(tChatGroup.id);
+          final result =
+              await chatsRepositoryImpl.deleteChatGroup(tChatGroup.id);
 
           // assert
           verify(remoteDatasource.deleteChatGroup(tChatGroup.id));
@@ -204,7 +209,8 @@ void main() {
         'should return ServerFailure when device is offline',
         () async {
           // act
-          final result = await chatsRepositoryImpl.deleteChatGroup(tChatGroup.id);
+          final result =
+              await chatsRepositoryImpl.deleteChatGroup(tChatGroup.id);
 
           // assert
           verifyZeroInteractions(remoteDatasource);
@@ -249,7 +255,8 @@ void main() {
         'should return chatGroup id as string when the call to remote data source is successful',
         () async {
           // arrange
-          when(remoteDatasource.createChatGroup(any)).thenAnswer((_) async => tChatGroup.mentorId);
+          when(remoteDatasource.createChatGroup(any))
+              .thenAnswer((_) async => tChatGroup.mentorId);
 
           // act
           final result = await chatsRepositoryImpl.createChatGroup(tMentorId);
@@ -264,7 +271,8 @@ void main() {
         'should return ServerFailure when the call to remote data source is unsuccessful',
         () async {
           // arrange
-          when(remoteDatasource.createChatGroup(any)).thenThrow(ServerException());
+          when(remoteDatasource.createChatGroup(any))
+              .thenThrow(ServerException());
 
           // act
           final result = await chatsRepositoryImpl.createChatGroup(tMentorId);
@@ -334,10 +342,12 @@ void main() {
         'should return null when the call to remote data source is successful',
         () async {
           // arrange
-          when(remoteDatasource.sendChatMessage(any, any)).thenAnswer((_) async => null);
+          when(remoteDatasource.sendChatMessage(any, any))
+              .thenAnswer((_) async => null);
 
           // act
-          final result = await chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+          final result = await chatsRepositoryImpl.sendChatMessage(
+              tChatGroup.id, tChatMessage);
 
           // assert
           verify(remoteDatasource.sendChatMessage(tChatGroup.id, tChatMessage));
@@ -349,10 +359,12 @@ void main() {
         'should return ServerFailure when the call to remote data source is unsuccessful',
         () async {
           // arrange
-          when(remoteDatasource.sendChatMessage(any, any)).thenThrow(ServerException());
+          when(remoteDatasource.sendChatMessage(any, any))
+              .thenThrow(ServerException());
 
           // act
-          final result = await chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+          final result = await chatsRepositoryImpl.sendChatMessage(
+              tChatGroup.id, tChatMessage);
 
           // assert
           verify(remoteDatasource.sendChatMessage(tChatGroup.id, tChatMessage));
@@ -366,7 +378,8 @@ void main() {
         'should return ServerFailure when device is offline',
         () async {
           // act
-          final result = await chatsRepositoryImpl.sendChatMessage(tChatGroup.id, tChatMessage);
+          final result = await chatsRepositoryImpl.sendChatMessage(
+              tChatGroup.id, tChatMessage);
 
           // assert
           verifyZeroInteractions(remoteDatasource);

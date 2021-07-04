@@ -23,18 +23,21 @@ void main() {
     ChatGroup(id: 'test id', mentorId: 'test mentorId', messages: []),
   ];
 
+  final tListStream = Stream.value(tList);
+
   test(
-    'should return a List<ChatGroups> when the fetching is successfull',
+    'should return a Stream<List<ChatGroups>> when the fetching is successfull',
     () async {
       // arrange
-      when(mockChatsRepository.getChatGroups()).thenAnswer((_) async => Right(tList));
+      when(mockChatsRepository.getChatGroups())
+          .thenAnswer((_) async => Right(tListStream));
 
       // act
       final result = await useCase(NoParams());
 
       // assert
       verify(mockChatsRepository.getChatGroups());
-      expect(result, Right(tList));
+      expect(result, Right(tListStream));
       verifyNoMoreInteractions(mockChatsRepository);
     },
   );
@@ -43,7 +46,8 @@ void main() {
     'should return a ServerFailure when the fetching is unsuccessfull',
     () async {
       // arrange
-      when(mockChatsRepository.getChatGroups()).thenAnswer((_) async => (Left(ServerFailure())));
+      when(mockChatsRepository.getChatGroups())
+          .thenAnswer((_) async => (Left(ServerFailure())));
 
       // act
       final result = await useCase(NoParams());

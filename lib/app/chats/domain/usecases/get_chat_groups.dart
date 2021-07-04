@@ -4,13 +4,13 @@ import '../repositories/chats_repository.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 
-class GetChatGroups implements UseCase<List<ChatGroup>, NoParams> {
+class GetChatGroups implements UseCase<Stream<List<ChatGroup>>, NoParams> {
   final ChatsRepository repository;
 
   GetChatGroups(this.repository);
 
   @override
-  Future<Either<Failure, List<ChatGroup>>> call(NoParams params) async {
+  Future<Either<Failure, Stream<List<ChatGroup>>>> call(NoParams params) async {
     return await repository.getChatGroups();
   }
 }
