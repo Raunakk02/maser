@@ -46,7 +46,7 @@ abstract class ChatsRemoteDatasource {
   /// with provided mentorId.
   ///
   /// Throws a [ServerException] for all error codes.
-  Future<void> sendChatMessage(String chatGroupId, ChatMessage message);
+  Future<void> sendChatMessage(String mentorId, ChatMessage message);
 }
 
 class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
@@ -122,7 +122,7 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
   }
 
   @override
-  Future<void> sendChatMessage(String chatGroupId, ChatMessage message) {
+  Future<void> sendChatMessage(String mentorId, ChatMessage message) {
     return null;
   }
 
