@@ -25,6 +25,9 @@ class _ChatBoxWidgetState extends State<ChatBoxWidget> {
 
   Future _sendMessage() async {
     FocusScope.of(context).unfocus();
+    if (chatController.value.text.trim().isEmpty) {
+      return;
+    }
     _chatMessage = ChatMessage(
       id: DateTime.now().toIso8601String(),
       msg: chatController.value.text.trim(),

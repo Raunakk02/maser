@@ -42,7 +42,11 @@ class ChatBubble extends StatelessWidget {
         ),
         alignment: isSender ? Alignment.topRight : Alignment.topLeft,
         color: isSender ? Colors.grey[200] : Colors.white,
-        margin: const BubbleEdges.only(bottom: 10),
+        margin: BubbleEdges.only(
+          bottom: 10,
+          right: isSender ? 0 : 40,
+          left: isSender ? 40 : 0,
+        ),
       ),
     );
   }

@@ -4,7 +4,8 @@ import 'package:get/get.dart';
 import 'package:maser/app/chats/data/datasources/chats_remote_datasource.dart';
 import 'package:maser/app/chats/data/repositories/chats_repository_impl.dart';
 import 'package:maser/app/chats/domain/entities/chat_group.dart';
-import 'package:maser/app/chats/domain/usecases/get_chat_groups.dart';
+import 'package:maser/app/chats/domain/usecases/delete_chat_group.dart'
+    as deleteChatGroupUseCase;
 import 'package:maser/app/chats/domain/usecases/get_user_details.dart';
 import 'package:maser/app/chats/presentation/viewmodels/chat_messaging_page_viewmodel.dart';
 import 'package:maser/core/managers/navigation/route_constants.dart';
@@ -13,6 +14,13 @@ import 'package:maser/core/services/network/network_info.dart';
 
 class ChatGroupsPageViewmodel extends GetxController {
   final _getMentorDetails = GetUserDetails(
+    ChatsRepositoryImpl(
+      remoteDatasource: ChatsRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
+  final _deleteChatGroup = deleteChatGroupUseCase.DeleteChatGroup(
     ChatsRepositoryImpl(
       remoteDatasource: ChatsRemoteDatasourceImpl(),
       networkInfo: NetworkInfoImpl(DataConnectionChecker()),
@@ -31,6 +39,17 @@ class ChatGroupsPageViewmodel extends GetxController {
       ));
     }
     return result.getOrElse(null);
+  }
+
+  Future<void> deleteUserChatGroup(String chatGroupId) async {
+    final result = await _deleteChatGroup(
+        deleteChatGroupUseCase.Params(chatGroupId: chatGroupId));
+    if (result.isLeft()) {
+      Get.showSnackbar(GetBar(
+        message: "Something went wrong!",
+        duration: Duration(seconds: 2),
+      ));
+    }
   }
 
   void navigateToChatMessagingPage(ChatGroup chatGroup) {
