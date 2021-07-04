@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -33,16 +35,37 @@ class ChatGroupsPage extends StatelessWidget {
                 "messages": doc["messages"],
               });
             }).toList();
-            return ListView.separated(
-              separatorBuilder: (_, __) => Divider(
-                thickness: 1,
-                height: 0,
-              ),
-              itemCount: chatGroups.length,
-              itemBuilder: (_, index) {
-                return _buildChatNameCard(chatGroups[index]);
-              },
-            );
+            return chatGroups.length <= 0
+                ? Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.groups,
+                          size: 100,
+                          color: AppColors.grass,
+                        ),
+                        Text(
+                          "Chats are a great place to connect with people!",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.black54,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.separated(
+                    separatorBuilder: (_, __) => Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
+                    itemCount: chatGroups.length,
+                    itemBuilder: (_, index) {
+                      return _buildChatNameCard(chatGroups[index]);
+                    },
+                  );
           }),
     );
   }
@@ -70,6 +93,39 @@ class ChatGroupsPage extends StatelessWidget {
             ),
           ),
           title: Text('${mentorDetails.name}'),
+          onLongPress: () {
+            Get.dialog(BackdropFilter(
+              filter: ImageFilter.blur(
+                sigmaX: 5,
+                sigmaY: 5,
+              ),
+              child: AlertDialog(
+                title: Text('Delete chat'),
+                content: Text('Are you sure you want to delete this chat?'),
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      model.deleteUserChatGroup(chatGroup.id);
+                      Get.back();
+                    },
+                    icon: Icon(
+                      Icons.done,
+                      color: AppColors.grass,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Get.back();
+                    },
+                    icon: Icon(
+                      Icons.close,
+                      color: AppColors.ruby,
+                    ),
+                  ),
+                ],
+              ),
+            ));
+          },
           onTap: () {
             model.navigateToChatMessagingPage(chatGroup);
           },

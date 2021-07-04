@@ -99,25 +99,23 @@ class ChatsRemoteDatasourceImpl implements ChatsRemoteDatasource {
   }
 
   @override
-  Future<void> deleteChatGroup(String chatGroupId) {
-    return null;
+  Future<void> deleteChatGroup(String chatGroupId) async {
+    try {
+      final _userChatsCollection = _getUserChatsCollection(userId);
+      final doc = _userChatsCollection.doc(chatGroupId);
+      final docSnapshot = await doc.get();
+      if (!docSnapshot.exists) {
+        return;
+      }
+      await doc.delete();
+    } catch (e) {
+      throw ServerException();
+    }
   }
 
   @override
   Future<Stream<List<ChatGroup>>> getChatGroups() async {
     Stream<List<ChatGroup>> _chatGroupsStream;
-    // List<ChatGroup> _chatGroups;
-    // try {
-    //   final querySnapshot = _getUserChatsCollection(userId).snapshots();
-    //   querySnapshot.listen((event) {
-    //     event.docs.forEach((doc) {
-    //       final chatGroup = ChatGroupModel.fromJson(doc as Map);
-    //       _chatGroups.add(chatGroup);
-    //     });});
-    //   _chatGroupsStream = Stream.value(_chatGroups);
-    // } catch (e) {
-    //   throw ServerException();
-    // }
     return _chatGroupsStream;
   }
 
