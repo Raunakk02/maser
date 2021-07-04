@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/widgets/custom_app_bar.dart';
 
-class ChatsPage extends StatelessWidget {
-  const ChatsPage({Key key}) : super(key: key);
+class ChatGroupsPage extends StatelessWidget {
+  const ChatGroupsPage({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

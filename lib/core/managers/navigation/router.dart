@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:maser/app/auth/presentation/views/auth_page.dart';
 import 'package:maser/app/auth/presentation/views/tabs_page.dart';
+import 'package:maser/app/chats/domain/entities/chat_group.dart';
+import 'package:maser/app/chats/presentation/views/chat_messaging_page.dart';
 import 'package:maser/app/stories/domain/entities/story.dart';
 import 'package:maser/app/stories/presentation/views/add_stories_page.dart';
 import 'package:maser/app/stories/presentation/views/story_details_page.dart';
@@ -22,6 +24,8 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case RouteConstants.storyDetailsPage:
       var story = settings.arguments as Story;
       return MaterialPageRoute(builder: (_) => StoryDetailsPage(story: story));
+    case RouteConstants.chatMessagingPage:
+      return MaterialPageRoute(builder: (_) => ChatMessagingPage());
     // case RouteConstants.secondPage:
     //   var arguments = settings.arguments as String;
     //   return MaterialPageRoute(builder: (_) => SecondPage(arg: arguments));
