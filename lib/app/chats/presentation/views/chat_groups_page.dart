@@ -93,39 +93,6 @@ class ChatGroupsPage extends StatelessWidget {
             ),
           ),
           title: Text('${mentorDetails.name}'),
-          onLongPress: () {
-            Get.dialog(BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 5,
-                sigmaY: 5,
-              ),
-              child: AlertDialog(
-                title: Text('Delete chat'),
-                content: Text('Are you sure you want to delete this chat?'),
-                actions: [
-                  IconButton(
-                    onPressed: () {
-                      model.deleteUserChatGroup(chatGroup.id);
-                      Get.back();
-                    },
-                    icon: Icon(
-                      Icons.done,
-                      color: AppColors.grass,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () {
-                      Get.back();
-                    },
-                    icon: Icon(
-                      Icons.close,
-                      color: AppColors.ruby,
-                    ),
-                  ),
-                ],
-              ),
-            ));
-          },
           onTap: () {
             model.navigateToChatMessagingPage(chatGroup);
           },
