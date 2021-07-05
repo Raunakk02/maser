@@ -34,7 +34,8 @@ class AddStoriesPage extends StatelessWidget {
                   height: 20,
                 ),
                 TextFormField(
-                  textInputAction: TextInputAction.newline,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: 5,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     icon: Icon(Icons.description),
