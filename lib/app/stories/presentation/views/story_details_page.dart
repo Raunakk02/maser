@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:maser/app/stories/domain/entities/story.dart';
 import 'package:maser/core/managers/theme/app_colors.dart';
+import 'package:maser/core/models/user.dart';
 
 class StoryDetailsPage extends StatelessWidget {
   final Story story;
-  const StoryDetailsPage({Key key, @required this.story}) : super(key: key);
+  final User user;
+  const StoryDetailsPage({Key key, @required this.story, @required this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,6 @@ class StoryDetailsPage extends StatelessWidget {
             floating: true,
             centerTitle: true,
             elevation: 0,
-            // pinned: true,
             flexibleSpace: Stack(
               children: [
                 Positioned(
@@ -89,13 +91,13 @@ class StoryDetailsPage extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.ruby,
+                            color: AppColors.sea_blue,
                           ),
                           children: [
                             TextSpan(
-                              text: story.mentorId,
+                              text: user.name,
                               style: TextStyle(
-                                fontSize: 14,
+                                fontSize: 16,
                                 color: Colors.black54,
                               ),
                             ),

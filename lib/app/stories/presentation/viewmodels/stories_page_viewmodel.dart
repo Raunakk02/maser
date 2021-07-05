@@ -7,6 +7,8 @@ import 'package:maser/app/chats/domain/usecases/create_chat_group.dart'
     as createChatGroupUseCase;
 import 'package:maser/app/chats/domain/usecases/get_chat_group.dart'
     as getChatGroupUseCase;
+import 'package:maser/app/chats/domain/usecases/get_user_details.dart'
+    as getUserDetails;
 import 'package:maser/app/chats/presentation/viewmodels/chat_messaging_page_viewmodel.dart';
 import 'package:maser/app/stories/data/datasources/stories_remote_datasource.dart';
 import 'package:maser/app/stories/data/repositories/stories_repository_impl.dart';
@@ -96,6 +98,13 @@ class StoriesPageViewmodel extends GetxController {
   );
 
   final _getChatGroup = getChatGroupUseCase.GetChatGroup(
+    ChatsRepositoryImpl(
+      remoteDatasource: ChatsRemoteDatasourceImpl(),
+      networkInfo: NetworkInfoImpl(DataConnectionChecker()),
+    ),
+  );
+
+  final _getUserDetails = getUserDetails.GetUserDetails(
     ChatsRepositoryImpl(
       remoteDatasource: ChatsRemoteDatasourceImpl(),
       networkInfo: NetworkInfoImpl(DataConnectionChecker()),
@@ -274,8 +283,23 @@ class StoriesPageViewmodel extends GetxController {
     });
   }
 
-  void navigateToStoryDetailsPage(Story _story) {
-    Get.toNamed(RouteConstants.storyDetailsPage, arguments: _story);
+  void navigateToStoryDetailsPage(Story _story) async {
+    final result = await _getUserDetails(
+      getUserDetails.Params(
+        userId: _story.mentorId,
+      ),
+    );
+    if (result.isLeft()) {
+      Get.showSnackbar(GetBar(
+        message: "Something went wrong!",
+      ));
+    } else {
+      final _user = result.getOrElse(null);
+      Get.toNamed(RouteConstants.storyDetailsPage, arguments: {
+        'story': _story,
+        'user': _user,
+      });
+    }
   }
 
   Future<void> createChatGroupAndNavigate(String mentorId) async {

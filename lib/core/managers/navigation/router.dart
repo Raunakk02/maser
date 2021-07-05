@@ -21,8 +21,14 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case RouteConstants.addStoriesPage:
       return MaterialPageRoute(builder: (_) => AddStoriesPage());
     case RouteConstants.storyDetailsPage:
-      var story = settings.arguments as Story;
-      return MaterialPageRoute(builder: (_) => StoryDetailsPage(story: story));
+      final args = settings.arguments as Map;
+      final story = args['story'];
+      final user = args['user'];
+      return MaterialPageRoute(
+          builder: (_) => StoryDetailsPage(
+                story: story,
+                user: user,
+              ));
     case RouteConstants.chatMessagingPage:
       return MaterialPageRoute(builder: (_) => ChatMessagingPage());
     // case RouteConstants.secondPage:
