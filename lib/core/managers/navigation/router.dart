@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:maser/app/auth/presentation/views/auth_page.dart';
 import 'package:maser/app/auth/presentation/views/tabs_page.dart';
 import 'package:maser/app/chats/presentation/views/chat_messaging_page.dart';
-import 'package:maser/app/stories/domain/entities/story.dart';
 import 'package:maser/app/stories/presentation/views/add_stories_page.dart';
 import 'package:maser/app/stories/presentation/views/story_details_page.dart';
 import 'package:maser/home_page.dart';
