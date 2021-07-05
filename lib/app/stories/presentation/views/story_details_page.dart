@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:maser/app/stories/domain/entities/story.dart';
 import 'package:maser/core/managers/theme/app_colors.dart';
 import 'package:maser/core/models/user.dart';
@@ -108,7 +109,7 @@ class StoryDetailsPage extends StatelessWidget {
                         height: 5,
                       ),
                       Text(
-                        story.postedOn.toString(),
+                        DateFormat.yMMMEd().format(story.postedOn),
                         style: TextStyle(
                           fontSize: 12,
                           color: Colors.black54,
