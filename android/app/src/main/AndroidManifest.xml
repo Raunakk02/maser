@@ -2,7 +2,7 @@
     package="com.raunakk02.maser">
    <application
         android:label="maser"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
