@@ -6,8 +6,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Raunakk02/maser)
 ![GitHub issues](https://img.shields.io/github/issues-raw/Raunakk02/maser)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Raunakk02/maser)
-![GitHub](https://img.shields.io/github/license/Raunakk02/maser)
-![Tweet](https://img.shields.io/twitter/url?style=flat-square&logo=twitter&url=https%3A%2F%2Fnavendu.me%2Fnsfw-filter%2Findex.html)
+![GitHub](https://img.shields.io/github/license/Raunakk02/maser?label=license)
 
 <p align="center">
 <img src="assets/images/app_logo.png" height="200" width="200">
@@ -50,9 +49,9 @@ scope of this project.
     <td>View all the details of a story</td>
   </tr>
   <tr>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124927551-639ef500-e01c-11eb-9e47-8dcc68dd8212.png" height="470" width="240"></td>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124927690-892bfe80-e01c-11eb-99be-2034302f253e.png" height="470" width="240"></td>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124930348-df9a3c80-e01e-11eb-9805-214036ff4895.png" height="470" width="240"></td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124927551-639ef500-e01c-11eb-9e47-8dcc68dd8212.png"</td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124927690-892bfe80-e01c-11eb-99be-2034302f253e.png"</td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124930348-df9a3c80-e01e-11eb-9805-214036ff4895.png"</td>
   </tr>
  </table>
 
@@ -66,10 +65,10 @@ scope of this project.
     <td>View your user profile</td>
   </tr>
   <tr>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124928304-1f602480-e01d-11eb-939a-cf0704d00a3f.png" height="470" width="240"></td>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124929567-3d7a5480-e01e-11eb-9e14-a2b4754e2452.png" height="470" width="240"></td>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124929933-86320d80-e01e-11eb-95ea-d1b51e47cdb9.png" height="470" width="240"></td>
-    <td><img src="https://user-images.githubusercontent.com/56073198/124930764-3d2e8900-e01f-11eb-836d-f048d0670012.png" height="470" width="240"></td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124928304-1f602480-e01d-11eb-939a-cf0704d00a3f.png"></td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124929567-3d7a5480-e01e-11eb-9e14-a2b4754e2452.png"></td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124929933-86320d80-e01e-11eb-95ea-d1b51e47cdb9.png"></td>
+    <td><img src="https://user-images.githubusercontent.com/56073198/124930764-3d2e8900-e01f-11eb-836d-f048d0670012.png"></td>
   </tr>
  </table>
 
@@ -105,14 +104,10 @@ The process to run this project on your system is quite simple. Here's what you 
 
 **Note**: If you face any build errors, then follow these steps:
 
-    1. Try deleting the `pubspec.loc- [MASER - Mentoring App with Sentiments and Emotion Recognition](#maser---mentoring-app-with-sentiments-and-emotion-recognition)
-- [MASER - Mentoring App with Sentiments and Emotion Recognition](#maser---mentoring-app-with-sentiments-and-emotion-recognition)
-- [Table of contents](#table-of-contents)
-- [Demo-Preview](#demo-preview)
-- [Development](#development)
-  - [Prerequisites](#prerequisites)
-  - [Command Line Steps](#command-line-steps)
-- [Contribute](#contribute)
+    1. Try deleting the `pubspec.lock` file.
+    2. After that, run `flutter clean` to remove the previous build.
+    3. Finally run `flutter pub get`, to fetch all the packages in `pubspec.yaml` file.
+    4. Now try to run the project with `flutter run`.
 
 
 # Contribute
