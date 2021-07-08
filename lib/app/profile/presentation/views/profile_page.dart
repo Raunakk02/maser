@@ -69,7 +69,8 @@ class ProfilePage extends StatelessWidget {
                     _buildRichText('Name:', model.user.name),
                     _buildRichText('Email:', model.user.email),
                     if (model.user.phone != null)
-                      _buildRichText('Phone:', model.user.phone),
+                      if (model.user.phone.isNotEmpty)
+                        _buildRichText('Phone:', model.user.phone),
                     SizedBox(
                       height: 40,
                     ),
