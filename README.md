@@ -1,14 +1,12 @@
 
 # MASER - Mentoring App with Sentiments and Emotion Recognition
 
-<!-- Changes to check if build works for pushes in any branch -->
 
 ![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Raunakk02/maser?include_prereleases)
 ![GitHub last commit](https://img.shields.io/github/last-commit/Raunakk02/maser)
 ![GitHub issues](https://img.shields.io/github/issues-raw/Raunakk02/maser)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/Raunakk02/maser)
 ![GitHub](https://img.shields.io/github/license/Raunakk02/maser?label=license)
-[![Codemagic build status](https://api.codemagic.io/apps/60e9d55b8daa78e3923a903a/60e9d55b8daa78e3923a9039/status_badge.svg)](https://codemagic.io/apps/60e9d55b8daa78e3923a903a/60e9d55b8daa78e3923a9039/latest_build)
 
 <p align="center">
 <img src="assets/images/app_logo.png" height="200" width="200">
