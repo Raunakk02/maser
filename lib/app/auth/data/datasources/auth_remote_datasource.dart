@@ -59,6 +59,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
     try {
       await googleLogin();
       final firebaseUser = FirebaseAuth.instance.currentUser;
+      if (firebaseUser == null) {
+        throw AuthException();
+      }
       final user = UserModel(
         id: firebaseUser.uid,
         name: firebaseUser.displayName,
